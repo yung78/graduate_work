@@ -160,13 +160,14 @@ app.post('/login', function (req, res) {
 
 //Выход из системы
 app.get('/logout', checkAuth, function (req, res) {
-
   let logout = false;
+
   users.forEach((user) => {
     if (user.sessionToken === req.headers.authorization) {
       user.sessionToken = null;
       user.user.lastVisit = Date.now();
       logout = true;
+
       return;
     }
   });
@@ -180,7 +181,6 @@ app.get('/logout', checkAuth, function (req, res) {
 
 //Изменение данных персоны
 app.patch('/change_person_data', checkAuth, function (req, res) {
-  console.log('change');
   let changedField = {};
   users.forEach((user) => {
     if (user.sessionToken === req.headers.authorization) {
@@ -198,11 +198,9 @@ app.patch('/change_person_data', checkAuth, function (req, res) {
   return res.status(403).send({error:'You are not authorized'});
 });
 
-//Загрузка файлов пользователя
+//Загрузка файлов в облако пользователя
 app.post('/upload_files', checkAuth, function (req, res) {
   let userData;
-  console.log('upload')
-  console.log(req.checkAuth);
 
   if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).send({error: 'No files were uploaded.'});
@@ -245,7 +243,7 @@ app.post('/upload_files', checkAuth, function (req, res) {
   return res.status(403).send({error:'You are not authorized'});
 });
 
-//Удалить файл пользователя
+//Удаление файла из облака пользователя
 app.delete('/delete_file/:fileName', checkAuth, function (req, res) {
   console.log('delete')
   if (req.checkAuth) {
