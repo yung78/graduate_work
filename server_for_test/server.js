@@ -181,50 +181,31 @@ app.get('/logout', checkAuth, function (req, res) {
 
 //Изменение данных персоны
 app.patch('/change_person_data', checkAuth, function (req, res) {
-  let changedField = {};
-  users.forEach((user) => {
-    if (user.sessionToken === req.headers.authorization) {
-      user.user[Object.keys(req.body)[0]] = req.body[Object.keys(req.body)[0]];
-      changedField = req.body;
-
-      return;
-    }
-  });
-
-  if (changedField) {
-    return res.status(201).send(changedField);
+  if (req.checkAuth) {
+    req.checkAuth[Object.keys(req.body)[0]] = req.body[Object.keys(req.body)[0]];
+    return res.status(201).send(req.body);
   }
 
   return res.status(403).send({error:'You are not authorized'});
 });
 
-//Загрузка файлов в облако пользователя
+//Загрузка файлов в облачное хранилище пользователя
 app.post('/upload_files', checkAuth, function (req, res) {
-  let userData;
-
   if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).send({error: 'No files were uploaded.'});
   }
 
-  users.forEach((user) => {
-    if (user.sessionToken === req.headers.authorization) {
-      userData = user.user;
-
-      return;
-    }
-  });
-
-  if (userData) {
+  if (req.checkAuth) {
     let errors = [];
 
     Object.keys(req.files).forEach((file) => {
-      userData.files[file] = {
+      req.checkAuth.files[file] = {
         name: file,
         size: req.files[file].size,
         created: Date.now(),
       };
       const uploadFile = req.files[file];
-      const uploadPath = `./usersClouds/${userData.id}/${file}`;
+      const uploadPath = `./usersClouds/${req.checkAuth.id}/${file}`;
 
       uploadFile.mv(uploadPath, function(err) {
         if (err) {
@@ -237,26 +218,39 @@ app.post('/upload_files', checkAuth, function (req, res) {
       return res.status(500).send({error: errors});
     }
 
-    return res.status(201).send(userData.files);
+    return res.status(201).send(req.checkAuth.files);
   }
 
   return res.status(403).send({error:'You are not authorized'});
 });
 
-//Удаление файла из облака пользователя
+//Удаление файла из облачного хранилища пользователя
 app.delete('/delete_file/:fileName', checkAuth, function (req, res) {
   console.log('delete')
+  const deleteError = {}
   if (req.checkAuth) {
-    console.log(req.params)
     const fileName = req.params.fileName;
     unlink(`./usersClouds/${req.checkAuth.id}/${fileName}`, (err) => {
       if (err) {
-          throw err;
+        deleteError['error'] = err;
+
+        return res.status(500).send(deleteError); 
       }
+
+      delete req.checkAuth.files[fileName];
+      return res.status(204).send(req.checkAuth.files);
     });
-    res.status(204).send({ a: '123456'});
   }
+
+  return res.status(403).send({error:'You are not authorized'});
 });
+
+
+
+
+
+
+
 
 
 const port = process.env.PORT || 7070;
