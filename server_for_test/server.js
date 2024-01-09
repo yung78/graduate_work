@@ -5,10 +5,19 @@ import uniqid from 'uniqid';
 import customId from 'custom-id';
 import fileUpload from 'express-fileupload';
 import {unlink} from 'fs';
+import mime from 'mime';
+import cryptoJs from 'crypto-js';
+
+// Исправить позже(возможно уже в приложении django):
+// 1)Вставить try-catch () во все middleware
+// 2)Решить проблему с дублированием имен сохраняемых файлов
+// 3)Сохранение аватара
+// 4)Изменение пароля пользователя
+// 5)Логирование? Как реализовать
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ exposedHeaders: ['Content-Disposition'] }));
 
 app.use(
   bodyParser.json()
@@ -55,8 +64,8 @@ let users = [
       avatar: 'https://cdn2.thecatapi.com/images/daa.jpg',
       isAdmin: false,
       files: {
-        'some very long name of photo.jpg': {
-          name: 'some very long naim of photo.jpg',
+        'some very long name of photo made in last century.jpg': {
+          name: 'some very long naim of photo made in last century.jpg',
           size: 11234,
           created: 1700962449000
         },
@@ -134,13 +143,13 @@ app.post('/registration', function (req, res) {
     }
   });
 
-  return res.status(201).send({success: true});
+  return res.status(201).send({ success: true });
 });
 
 //Вход в систему
 app.post('/login', function (req, res) {
   let sessionToken = null;
-  const {email, password} = req.body;
+  const { email, password } = req.body;
   users.forEach((user) => {
     if (user.user.email === email && user.password === password) {
       sessionToken = uniqid();
@@ -152,7 +161,7 @@ app.post('/login', function (req, res) {
   });
 
   if (sessionToken) {
-    return res.status(200).send({sessionToken});
+    return res.status(200).send({ sessionToken });
   }
   
   return res.status(401).json({ error: "Bad login or password" });
@@ -176,7 +185,7 @@ app.get('/logout', checkAuth, function (req, res) {
     return res.status(200).end();
   }
 
-  return res.status(403).send({error:'You are not authorized'});
+  return res.status(403).send({ error:'You are not authorized' });
 });
 
 //Изменение данных персоны
@@ -192,7 +201,7 @@ app.patch('/change_person_data', checkAuth, function (req, res) {
 //Загрузка файлов в облачное хранилище пользователя
 app.post('/upload_files', checkAuth, function (req, res) {
   if (!req.files || Object.keys(req.files).length === 0) {
-    return res.status(400).send({error: 'No files were uploaded.'});
+    return res.status(400).send({ error: 'No files were uploaded.' });
   }
 
   if (req.checkAuth) {
@@ -205,23 +214,22 @@ app.post('/upload_files', checkAuth, function (req, res) {
         created: Date.now(),
       };
       const uploadFile = req.files[file];
-      const uploadPath = `./usersClouds/${req.checkAuth.id}/${file}`;
+      const uploadPath = `./usersClouds/${ req.checkAuth.id }/${ file }`;
 
       uploadFile.mv(uploadPath, function(err) {
         if (err) {
-          return errors.push(err);
+          errors.push(err);
         }
       });
     });
 
     if (errors.length > 0) {
-      return res.status(500).send({error: errors});
+      return res.status(500).send({ error: err });
     }
-
     return res.status(201).send(req.checkAuth.files);
+  } else {
+    return res.status(403).send({ error:'You are not authorized' });
   }
-
-  return res.status(403).send({error:'You are not authorized'});
 });
 
 //Удаление файла из облачного хранилища пользователя
@@ -230,7 +238,7 @@ app.delete('/delete_file/:fileName', checkAuth, function (req, res) {
   const deleteError = {}
   if (req.checkAuth) {
     const fileName = req.params.fileName;
-    unlink(`./usersClouds/${req.checkAuth.id}/${fileName}`, (err) => {
+    unlink(`./usersClouds/${ req.checkAuth.id }/${ fileName }`, (err) => {
       if (err) {
         deleteError['error'] = err;
 
@@ -238,20 +246,72 @@ app.delete('/delete_file/:fileName', checkAuth, function (req, res) {
       }
 
       delete req.checkAuth.files[fileName];
-      return res.status(204).send(req.checkAuth.files);
-    });
-  }
 
-  return res.status(403).send({error:'You are not authorized'});
+      return res.status(204).send();
+    });
+  } else {
+    return res.status(403).send({ error:'You are not authorized' });
+  }
 });
 
+//Отправка файла для сохранения(скачки) на стороне клиента
+app.get('/download_file/:fileName', checkAuth, function (req, res) {
+  if (req.checkAuth) {
+    const fileName = req.params.fileName;
+    const mimeType = mime.getType(fileName);
 
+    res.setHeader('Content-Disposition', 'attachment');
+    res.setHeader('Content-type', mimeType);
+    res.download(`./usersClouds/${ req.checkAuth.id }/${ fileName }`, function (err) {
+      if (err) {
+        res.setHeader('Content-Type', 'application/json');
+        return res.status(500).send({ error: err });
+      } else {
+        return res.end();
+      }
+    });
+  } else {
+    return res.status(403).send({ error:'You are not authorized' });
+  }
+});
 
+//Отправка криптоссылки для сохранения(скачки) файла сторонним пользователем
+app.get('/get_file_url/:fileName', checkAuth, function (req, res) {
+  if (req.checkAuth) {
+    const fileName = req.params.fileName;
+    // Шифруем путь к файлу на сервере и отправляем в качестве параметра URL ссылки на файл
+    const urlParamsEncrypt = cryptoJs.AES.encrypt(`${ req.checkAuth.id }/${ fileName }`, 'cript').toString().replaceAll('/', 'slash');
+    return res.status(200).send({ url: `http://localhost:3000/download/${urlParamsEncrypt}` });
+    
+  } else {
+    return res.status(403).send({ error:'You are not authorized' });
+  }
+});
 
+//Отправка файла для сохранения(скачки)сторонним пользователем по криптоссылке
+app.get('/download_file_by_link/:path', function (req, res) {
+  try {
+    // Расшифровываем путь к файлу на сервере из параметра URL ссылки
+    const params = req.params.path.replaceAll('slash', '/');
+    const urlParamsDecrypt = cryptoJs.AES.decrypt(params, 'cript').toString(cryptoJs.enc.Utf8);
+    const mimeType = mime.getType(urlParamsDecrypt);
+    // Получаем оригинальное имя файла и кодируем его (URI) для передачи в заголовках
+    const fileName = encodeURIComponent(urlParamsDecrypt.replace(/^.*[\\/]/, ''));
 
-
-
-
+    res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${fileName}; filename=${fileName}`);
+    res.setHeader('Content-Type', mimeType);
+    res.download(`./usersClouds/${urlParamsDecrypt}`, function (err) {
+      if (err) {
+        return res.status(404).end();
+      } else {
+        return res.status(200).end();
+      }
+    });
+    
+  } catch (err) {
+    return res.status(500);
+  }
+});
 
 const port = process.env.PORT || 7070;
 app.listen(port, () =>
