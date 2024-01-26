@@ -7,6 +7,7 @@ import { Form, useNavigate } from 'react-router-dom';
 //КОМПОНЕНТ УПРАВЛЕНИЯ ФАЙЛАМИ ХРАНИЛИЩА
 export default function CloudHeaderButton({ btnName, src }) {
   const cloudState = useSelector((state) => state.cloud);
+  const userState = useSelector((state) => state.user);
   const inputRef = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,26 +20,30 @@ export default function CloudHeaderButton({ btnName, src }) {
     'удалить': () => { cloudState.onFocus ? (dispatch(showDeleteConfirm())) : (dispatch(showMessage())) },
   };
 
-  //Обработчик нажатия кнопки
+  // Обработчик нажатия кнопок
   const handleClick = (btnName) => {
     buttonHandlers[btnName]();
   };
 
-  //Обработчик изменения файлов input (отправка файлов на сервер)
+  // Обработчик изменения файлов input (отправка файлов на сервер)
   const handleFileChange = async (e) => {
     if (e.target.files) {
       const formData = new FormData();
-
+      
       for (const file of e.target.files) {
-        formData.append(file.name, file);
+        formData.append('file', file);
+        formData.append('name', file.name);
+        formData.append('size', file.size);
+        formData.append('user', userState.id);
       }
 
       const response = await sendFiles(formData);
       if (response.error) {
+        e.target.value = "";
         return navigate('/');
       }
       e.target.value = "";
-      return dispatch(addUserFiles(response));
+      return dispatch(addUserFiles(response.files));
     }
 
     return;
@@ -60,7 +65,7 @@ export default function CloudHeaderButton({ btnName, src }) {
         <img src={src} alt="" className="relative" />
       </div>
       <span
-        className="text-xs"
+        className="text-[11px] sm:text-xs xl:text-base"
       >
         {btnName}
       </span>

@@ -48,7 +48,7 @@ let users = [
       email: 'alexey@mail.ru',
       avatar: 'https://cdn2.thecatapi.com/images/MTY1ODc5MA.png',
       isAdmin: true,
-      files: [],
+      files: {},
       lastVisit: 1700662449000
     }
   },
@@ -124,7 +124,7 @@ app.post('/registration', function (req, res) {
   });
 
   if (alreadyExist) {
-    return res.status(409).json({ error: "Already exist" });
+    return res.status(409).json({ error: "already exists" });
   }
  
   users.push({
@@ -146,7 +146,7 @@ app.post('/registration', function (req, res) {
   return res.status(201).send({ success: true });
 });
 
-//Вход в систему
+//Вход в систему(авторизация)
 app.post('/login', function (req, res) {
   let sessionToken = null;
   const { email, password } = req.body;

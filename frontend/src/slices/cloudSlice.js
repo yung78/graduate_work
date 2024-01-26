@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   view: false,
-  files: {},
+  files: [],
   onFocus: null,
   confirm: false,
   share: false,

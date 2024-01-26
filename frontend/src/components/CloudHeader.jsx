@@ -34,7 +34,7 @@ export default function CloudHeader() {
       >
 
         <div
-          className="w-[4vh] h-[4vh]"
+          className="w-[4vh] h-[4vh] cursor-pointer hover:w-[4.1vh] hover:h-[4.1vh]"
           onClick={handleClick}
         >
           <img src={cloudState.view ? "/img/tile_view.png" : "/img/list_view.png"} alt="" />

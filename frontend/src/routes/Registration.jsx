@@ -11,19 +11,19 @@ export async function action({request}) {
 
   // Простая валидация полей (кроме фамилии)
   if (typeof data.name !== 'string' || data.name.trim() === '') {
-    actionData.errors.name = 'НЕКОРРЕКТНОЕ ИМЯ';
+    actionData.errors.name = 'НЕКОРРЕКТНОЕ ИМЯ!';
   }
 
   if (typeof data.email !== 'string' || data.email.trim() === '' || !data.email.includes('@')) {
-    actionData.errors.email = 'НЕКОРРЕКТНАЯ ПОЧТА';
+    actionData.errors.email = 'НЕКОРРЕКТНАЯ ПОЧТА!';
   }
 
   if (typeof data.password !== 'string' || data.password.trim().length < 5) {
-    actionData.errors.password = 'НЕКОРРЕКТНЫЙ ПАРОЛЬ';
+    actionData.errors.password = 'НЕКОРРЕКТНЫЙ ПАРОЛЬ!';
   }
 
   if (data.password !== data.passwordRepeat) {
-    actionData.errors.passwordRepeat = 'НЕКОРРЕКТНЫЙ ПОВТОРНЫЙ ВВОД ПАРОЛЯ';
+    actionData.errors.passwordRepeat = 'НЕКОРРЕКТНЫЙ ПОВТОРНЫЙ ВВОД ПАРОЛЯ!';
   }
 
   if (Object.keys(actionData.errors).length === 0) {

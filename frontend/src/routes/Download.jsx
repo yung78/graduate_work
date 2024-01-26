@@ -35,7 +35,7 @@ export default function Download() {
   // Убираем шапку с навигацией
   useEffect(() => {
     dispatch(hideNavigation());
-  }, []);
+  });
 
   // Обработчик нажатия кнопки "Сохранить"(сохранение файла)
   const handleSave = () => {

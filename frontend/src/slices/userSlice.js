@@ -6,7 +6,7 @@ const initialState = {
   lastName: '',
   email: '',
   avatar: '/img/unknown_user.png',
-  files: '',
+  changePersonDataMessage: null
 };
 
 export const userSlice = createSlice({
@@ -20,18 +20,23 @@ export const userSlice = createSlice({
       return { ...initialState };
     },
     loadPersonData: (state, action) => {
-      const { id, name, lastName, email, avatar, files } = action.payload
-      if (avatar === '') {
-        return { id, name, lastName, email, avatar: '/img/unknown_user.png', files };
+      const { id, name, lastName, email, avatar } = action.payload;
+      if (avatar !== '') {
+        return { id, name, lastName, email, avatar };
       }
-      
-      return { id, name, lastName, email, avatar, files };
+      return { ...state, id, name, lastName, email }
     },
     changeField: (state, action) => {
       const key = action.payload[0];
       const value = action.payload[1];
       state[key] = value;
       return state;
+    },
+    addChangeDataMessage: (state, action) => {
+      return { ...state, changePersonDataMessage: action.payload };
+    },
+    resetChangeDataMessage: (state) => {
+      return { ...state, changePersonDataMessage: null };
     }
   },
 });
@@ -41,6 +46,8 @@ export const {
   resetPersonData,
   loadPersonData,
   changeField,
+  addChangeDataMessage,
+  resetChangeDataMessage,
 } = userSlice.actions;
 
 export default userSlice.reducer; 

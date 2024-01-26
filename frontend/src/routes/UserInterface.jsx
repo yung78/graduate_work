@@ -80,7 +80,7 @@ export default function UserInterface() {
           <div
             className="w-full flex justify-start flex-wrap gap-3"
           >
-            {person.files.length === 0 ? (
+            {cloudState.files.length === 0 ? (
               <div
                 className="w-full flex justify-center"
               >
@@ -89,14 +89,14 @@ export default function UserInterface() {
             ) : (
               cloudState.view ? (
                 <>
-                  {Object.keys(cloudState.files).map((file, index) => {
+                  {cloudState.files.map((file, index) => {
                     return (
                       <FileListView
                         key={index}
-                        src={handleName(file)}
-                        fileName={file}
-                        size={cloudState.files[file].size}
-                        created={cloudState.files[file].created}
+                        src={handleName(file.name)}
+                        fileName={file.name}
+                        size={file.size}
+                        created={file.created}
                         focus={handleFocus}
                       />
                     );
@@ -104,12 +104,12 @@ export default function UserInterface() {
                 </>
               ) : (
                 <>
-                  {Object.keys(cloudState.files).map((file, index) => {
+                  {cloudState.files.map((file, index) => {
                     return (
                       <FileTileView
                         key={index}
-                        src={handleName(file)}
-                        fileName={file}
+                        src={handleName(file.name)}
+                        fileName={file.name}
                         focus={handleFocus}
                       />
                     );

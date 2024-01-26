@@ -43,7 +43,7 @@ export default function FileListView({ src, fileName, size, created, focus }) {
         className="w-[13%] h-5 flex justify-center"
       >
         <div
-          className="w-5 h-5 hover:bg-gray-200 active:shadow-[0_0px_10px_4px_rgba(34,60,80,0.2)]"
+          className="w-5 h-5 hover:bg-gray-200 active:shadow-[0_0px_10px_4px_rgba(34,60,80,0.2)] cursor-pointer"
           onClick={handleCopy}
         >
           <img src="/img/copylink.png" alt="copyLink" />

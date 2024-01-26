@@ -1,18 +1,12 @@
 import { Outlet } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { showNavigation } from '../slices/appSlice';
+import { useSelector } from 'react-redux';
+
 
 //КОМПОНЕНТ(корневой роут) ДОМАШНЕЙ СТРАНИЦЫ ПРИ НЕПРОЙДЕННОЙ АУТЕНТИФИКАЦИИ
 export default function Root() {
-  const dispatch = useDispatch();
   const appState = useSelector((state) => state.app);
-
-  // useEffect(() => {
-  //   dispatch(showNavigation());
-  // }, []);
 
   return (
     <>

@@ -8,18 +8,20 @@ export default function PersonInfoField({atribute, text}) {
   const dispatch = useDispatch();
   const personState = useSelector((state) => state.user);
 
-  // Состояния для изменения полей личных данных этого компонента
+  // Состояния 'флагов' для изменения полей личных данных этого компонента
   const [changeName, setChangeName] = useState(false);
   const [changeLastName, setChangeLastName] = useState(false);
   const [changeEmail, setChangeEmail] = useState(false);
+  const [changePassword, setChangePassword] = useState(false);
 
   const stateFields = {
     name: changeName,
     lastName: changeLastName,
     email: changeEmail,
+    password: changePassword,
   }
 
-  // Обработчики изменения состояния полей личных данных
+  // Обработчики изменения 'флагов' состояния полей личных данных
   const handleChangeName = () => {
     setChangeName(true);
   }
@@ -32,62 +34,110 @@ export default function PersonInfoField({atribute, text}) {
     setChangeEmail(true);
   }
 
+  const handleChangePassword = () => {
+    setChangePassword(true);
+  }
+
   const handlers = {
     name: handleChangeName,
     lastName: handleChangeLastName,
     email: handleChangeEmail,
+    password: handleChangePassword,
   }
 
-  // Внесение изменений в состояние по атрибуту name полей личных данных
+  // Внесение изменений в состояние пользователя по атрибуту name полей личных данных(исключая пароль)
   const handleChangeField = (e) => {
-    const key = e.target.name;
-    const value = e.target.value;
-    
+    const key = e.target[atribute].name;
+    const value = e.target[atribute].value;
+    if (key === 'password') {
+      return
+    }
     dispatch(changeField([key, value]));
   }
 
   // Закрытие всех полей input и кнопок сохранить
-  const handleSave = () => {
+  const handleCloseChangeFields = () => {
     setChangeName(false);
     setChangeLastName(false);
     setChangeEmail(false);
+    setChangePassword(false);
   }
 
   return (
     <Form
-      className="w-3/5 h-16 mb-4 flex flex-col justify-center items-center"
+      className="w-3/5 min-h-16 mb-4 flex flex-col justify-center items-center"
       method='POST'
-      onSubmit={handleSave}
+      onSubmit={(e)=> {
+        handleChangeField(e);
+        handleCloseChangeFields();
+      }}
     >
       {stateFields[atribute]? (
         <>
+          {atribute === 'password' ? (
+            <p
+              className='text-xs'
+            >
+              старый пароль
+            </p>
+          ) : (
+            <></>
+          )}
           <input
             autoFocus
             type="text"
             name={atribute}
             className="w-full h-9 px-2 border-2 border-gray-300 bg-blue-100 rounded-md outline-none focus:border-gray-400"
-            defaultValue={personState[atribute]}
-            onChange={(e) => handleChangeField(e)}
+            defaultValue={atribute === 'password' ? '' : personState[atribute]}
           />
-          <button
-            className="text-xs text-center underline cursor-pointer"
-            type="submit"
-          >
-            СОХРАНИТЬ
-          </button>
+          {atribute === 'password' ? (
+            <>
+              <p
+                className='text-xs'
+              >
+                новый пароль
+              </p>
+              <input
+                type="text"
+                name="newPassword"
+                className="w-full h-9 px-2 border-2 border-gray-300 bg-blue-100 rounded-md outline-none focus:border-gray-400"
+                defaultValue=""
+              />
+            </>
+          ) : (
+            <></>
+          )}
+          <div>
+            <button
+              className="mx-5 text-center text-gray-800 font-bold cursor-pointer hover:text-black"
+              type="submit"
+            >
+              сохранить
+            </button>
+            <button
+              className="mx-5 text-center text-gray-800 font-bold cursor-pointer hover:text-black"
+              type="button"
+              onClick={handleCloseChangeFields}
+            >
+              отменить
+            </button>
+          </div>
         </>
       ) : (
         <>
           <div
             className="w-full h-9 px-2 border-2 border-gray-300 bg-blue-100 rounded-md outline-none focus:border-gray-400 leading-8"
           >
-            {text}&nbsp; <span>{personState[atribute]}</span>
+            {text}&nbsp;&nbsp;
+            <span>
+              {atribute === 'password' ? '********' : personState[atribute] }
+            </span>
           </div>
           <span
-            className="text-xs text-center underline cursor-pointer"
+            className="mx-5 text-sm text-center text-gray-800 font-bold cursor-pointer hover:text-black"
             onClick={handlers[atribute]}
           >
-            ИЗМЕНИТЬ
+            изменить
           </span>
         </>
       )}

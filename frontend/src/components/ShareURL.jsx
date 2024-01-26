@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteFocusOnFile, hideShareURL } from '../slices/cloudSlice';
-import { deleteFile, getPerson } from '../app/apiRequests';
 import { useGetURL } from '../app/customHooks';
 
 

@@ -15,7 +15,7 @@ export default function Footer() {
           <div
             className="underline  hover:text-gray-300"
           >
-            Техническая информация
+            ОБЩАЯ ИНФОРМАЦИЯ
           </div>
         </Link>
     </footer>

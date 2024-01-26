@@ -34,11 +34,12 @@ export async function login(data) {
       body: JSON.stringify(data),
     });
     
-    if (response.status !== 200 && response.status !== 401) {
+    if (response.status !== 200 && response.status !== 404) {
       throw new Error(response.statusText);
     }
 
     const result = await response.json();
+
     // При успешной аутентификации получаем токен сессии и сохраняем в localforage, при не успешной - sessionToken: undefind
     await localforage.setItem('sessionToken', result.sessionToken);
 
@@ -48,7 +49,7 @@ export async function login(data) {
   }
 }
 
-// Проверка на флаг администратора
+// Функция проверки на флаг администратора
 export async function isAdmin() {
   try {
     // Запрос с использованием токена сеанса в заголовке
@@ -96,15 +97,17 @@ export async function getPerson() {
   }
 }
 
-// Отмена аутентификации(выход)
+// Функция отмены аутентификации(выход)
 export async function logout() {
+  const token = await localforage.getItem('sessionToken');
+  await localforage.setItem('sessionToken', undefined);
   try {
     // Запрос с использованием токена сеанса в заголовке
     const response = await fetch(process.env.REACT_APP_LOGOUT_URL, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': await localforage.getItem('sessionToken'),
+        'Authorization': token,
       },
     });
 
@@ -112,13 +115,37 @@ export async function logout() {
       throw new Error(response.statusText);
     }
     
-    await localforage.setItem('sessionToken', undefined);
 
     return;
   } catch(err) {
     throw new Error(err.message);
   }
 }
+
+//Функция загрузки аватара
+export async function loadAvatar(formData) {
+  try {
+    // Запрос с использованием токена сеанса в заголовке
+    const response = await fetch(process.env.REACT_APP_CHANGE_PERSON_URL, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': await localforage.getItem('sessionToken'),
+      },
+      body: formData,
+    });
+    
+    if (response.status !== 201 && response.status !== 403) {
+      throw new Error(response.statusText);
+    }
+
+    const result = await response.json();
+
+    return result;
+  } catch(err) {
+    throw new Error(err.message);
+  }
+}
+
 
 //Функция внесения изменений в личные данные
 export async function changePersonData(data) {
@@ -133,12 +160,11 @@ export async function changePersonData(data) {
       body: JSON.stringify(data),
     });
     
-    if (response.status !== 201 && response.status !== 403) {
+    if (response.status !== 201 && response.status !== 403 && response.status !== 400) {
       throw new Error(response.statusText);
     }
 
     const result = await response.json();
-
     return result;
   } catch(err) {
     throw new Error(err.message);
@@ -171,7 +197,6 @@ export async function sendFiles(formData) {
 
 //Функция удаления файла из хранилища
 export async function deleteFile(fileName) {
-  console.log('api delete');
   try {
     // Запрос с использованием токена сеанса в заголовке
     const response = await fetch(process.env.REACT_APP_DELETE_URL + fileName, {
@@ -229,10 +254,7 @@ export async function getDownloadURL(fileName) {
       throw new Error(response.statusText);
     }
 
-    console.log(response)
-
     const downloadUrl = await response.json();
-    console.log(downloadUrl)
 
     return downloadUrl;
   } catch(err) {
@@ -254,15 +276,13 @@ export async function getFileByLink(params) {
       return { error: true };
     }
 
-    //Получение оригинального имени файла
+    //Получение оригинального имени файла из заголовка 'Content-Disposition'
     let fileName;
-    console.log(response.headers.get('Content-Disposition'))
     if (decodeURIComponent(response.headers.get('Content-Disposition')).includes('filename*')) {
       fileName = decodeURIComponent(response.headers.get('Content-Disposition').split("''")[1]);
     } else {
       fileName = decodeURIComponent(response.headers.get('Content-Disposition')).split("=")[1].replaceAll('"', '');
     }
-    
 
     const blob = await response.blob();
 
