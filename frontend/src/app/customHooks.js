@@ -4,6 +4,7 @@ import { login, logout } from '../slices/appSlice';
 import { loadPersonData, resetPersonData } from '../slices/userSlice';
 import { addUserFiles, deleteFocusOnFile, hideDeleteConfirm, hideShareURL, resetCloud, saveDownloadURL } from '../slices/cloudSlice';
 import { getDownloadURL } from './apiRequests';
+import { deleteFocusOnUser } from '../slices/adminSlice';
 
 //Хук загрузки данных в состояния при прохождении аутентификации(вход)
 export function useLogin(data) {
@@ -25,15 +26,16 @@ export function useLogout() {
   },[]);
 }
 
-//Хук обработки кликов для снятия фокуса с файла
+//Хук обработки кликов для снятия фокуса с файла/пользователя
 export function useOutsideFileClick() {
   const dispatch = useDispatch();
   useEffect(() => {
     const handleOutsideFileClick = (e) => {
-      if ((e.target.closest('.btn')) || (e.target.closest('.file')) || (e.target.closest('.modal'))) {
+      if ((e.target.closest('.btn')) || (e.target.closest('.file')) || (e.target.closest('.modal')) || (e.target.closest('.user'))) {
         return;
       }
 
+      dispatch(deleteFocusOnUser());
       dispatch(deleteFocusOnFile());
       dispatch(hideShareURL());
       dispatch(hideDeleteConfirm());

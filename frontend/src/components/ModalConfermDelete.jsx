@@ -4,7 +4,7 @@ import { deleteFile, getPerson } from '../app/apiRequests';
 import { useNavigate } from 'react-router-dom';
 
 //КОМПОНЕНТ ПОДТВЕРЖДЕНИЯ УДАЛЕНИЯ ФАЙЛА(модальное окно)
-export default function ConfermDelete() {
+export default function ModalConfermDelete() {
   const cloudState = useSelector((state) => state.cloud);
   const navigate = useNavigate();
   const dispatch = useDispatch();

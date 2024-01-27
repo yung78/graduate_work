@@ -1,14 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { changeView } from '../slices/cloudSlice';
 import appData from '../app/appData';
-import CloudHeaderButton from './CloudHeaderButton';
+import ButtonCloudHeader from './ButtonCloudHeader';
 
-//ШАПКА ОКНА ХРАНИЛИЩА ФАЙЛОВ
-export default function CloudHeader() {
+// КОМПОНЕНТ ШАПКИ ОКНА ХРАНИЛИЩА ФАЙЛОВ
+export default function HeaderCloud() {
   const dispatch = useDispatch();
   const cloudState = useSelector((state) => state.cloud);
 
-  //Изменение вида отображения файлов в окне хранилища
+  // Изменение вида отображения файлов в окне хранилища
   const handleClick = () => {
     dispatch(changeView());
   }
@@ -22,7 +22,7 @@ export default function CloudHeader() {
         className="w-1/2 h-[6vh] ml-4 flex justify-around"
       >
         {Object.keys(appData.cloudButtons).map((btnName, index) => (
-          <CloudHeaderButton
+          <ButtonCloudHeader
             key={index}
             btnName={btnName}
             src={appData.cloudButtons[btnName]}

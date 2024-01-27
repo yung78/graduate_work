@@ -17,6 +17,7 @@ import UserInterface, { loader as userLoader } from './routes/UserInterface';
 import PersonInfo, { action as personAction, loader as personLoader } from './routes/PersonInfo';
 import AdminInterface, { loader as adminLoader } from './routes/AdminInterface';
 import Download, {loader as downloadLoader} from './routes/Download';
+import UserCard, {loader as userCardLoader} from './routes/UserCard';
 
 const router = createBrowserRouter([
   {
@@ -63,6 +64,11 @@ const router = createBrowserRouter([
             path: 'download/:params',
             element: <Download />,
             loader: downloadLoader,
+          },
+          {
+            path: 'user_card/:params',
+            element: <UserCard />,
+            loader: userCardLoader,
           },
         ]
       },

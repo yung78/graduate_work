@@ -2,10 +2,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { redirect, useActionData, useLoaderData, useNavigate } from 'react-router-dom';
 import { useLogin } from '../app/customHooks';
 import { changePersonData, getPerson, loadAvatar } from '../app/apiRequests';
-import PersonInfoField from '../components/PersonInfoField';
+import FieldPersonInfo from '../components/FieldPersonInfo';
 import { useRef } from 'react';
 import { changeField } from '../slices/userSlice';
-import BackButton from '../components/BackButton';
+import ButtonBack from '../components/ButtonBack';
 
 //Загрузка данных персоны
 export async function loader() {
@@ -55,6 +55,8 @@ export default function PersonInfo() {
   const inputRef = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
+  useLogin(person);
 
   // Обработчик нажатия кнопки изменения аватара
   const handleLoadAvatar = () => {
@@ -65,10 +67,9 @@ export default function PersonInfo() {
   const handleAvatarChange = async (e) => {
     if (e.target.files) {
       const formData = new FormData();
-      console.log(e.target.files[0].type)
       if (e.target.files.length > 1 || !e.target.files[0].type.includes('image')) {
         e.target.value = "";
-        return console.log('BAD'); // !!!!!!! validatiom message
+        return console.log('BAD'); // !!!!!!! validation message
       }
 
       formData.append('avatar', e.target.files[0]);
@@ -78,11 +79,10 @@ export default function PersonInfo() {
         return navigate('/');
       }
       e.target.value = "";
+
       return dispatch(changeField(['avatar', response.avatar]));
     }
   }
-
-  useLogin(person);
   
   return (
     <div
@@ -122,19 +122,19 @@ export default function PersonInfo() {
         </div>
         
       </div>
-      <PersonInfoField
+      <FieldPersonInfo
         atribute={"name"}
         text={"Имя:"}
       />
-      <PersonInfoField
+      <FieldPersonInfo
         atribute={"lastName"}
         text={"Фамилия:"}
       />
-      <PersonInfoField
+      <FieldPersonInfo
         atribute={"email"}
         text={"E-mail:"}
       />
-      <PersonInfoField
+      <FieldPersonInfo
         atribute={"password"}
         text={"Пароль:"}
       />
@@ -157,7 +157,7 @@ export default function PersonInfo() {
           <></>
         )}
       </>
-      <BackButton />
+      <ButtonBack />
     </div>
   );
 }

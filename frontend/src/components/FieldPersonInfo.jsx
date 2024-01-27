@@ -4,7 +4,7 @@ import { Form } from 'react-router-dom';
 import { changeField } from '../slices/userSlice';
 
 //КОМПОНЕНТ ИЗМЕНЯЕМЫХ ПОЛЕЙ ЛИЧНЫХ ДАННЫХ
-export default function PersonInfoField({atribute, text}) {
+export default function FieldPersonInfo({atribute, text}) {
   const dispatch = useDispatch();
   const personState = useSelector((state) => state.user);
 

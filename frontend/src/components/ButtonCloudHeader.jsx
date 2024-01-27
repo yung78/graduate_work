@@ -4,15 +4,15 @@ import { addUserFiles, showDeleteConfirm, showMessage, showShareURL,  } from '..
 import { sendFiles, getFile } from '../app/apiRequests';
 import { Form, useNavigate } from 'react-router-dom';
 
-//КОМПОНЕНТ УПРАВЛЕНИЯ ФАЙЛАМИ ХРАНИЛИЩА
-export default function CloudHeaderButton({ btnName, src }) {
+// КОМПОНЕНТ КНОПОК УПРАВЛЕНИЯ ФАЙЛАМИ ХРАНИЛИЩА
+export default function ButtonCloudHeader({ btnName, src }) {
   const cloudState = useSelector((state) => state.cloud);
   const userState = useSelector((state) => state.user);
   const inputRef = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //Обработчики кнопок управления
+  // Обработчики кнопок управления
   const buttonHandlers = {
     'скачать': () => { cloudState.onFocus ? (getFile(cloudState.onFocus)) : (dispatch(showMessage())) },
     'поделиться': () => { cloudState.onFocus ? (dispatch(showShareURL())) : (dispatch(showMessage())) },

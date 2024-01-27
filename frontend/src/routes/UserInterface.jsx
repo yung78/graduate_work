@@ -3,12 +3,12 @@ import { isAdmin, getPerson } from '../app/apiRequests';
 import { useLogin, useOutsideFileClick } from '../app/customHooks';
 import FileListView from '../components/FileListView';
 import FileTileView from '../components/FileTileView';
-import appData from '../app/appData';
+import {handleName} from '../app/appData';
 import { useDispatch, useSelector } from 'react-redux';
-import CloudHeader from '../components/CloudHeader';
+import HeaderCloud from '../components/HeaderCloud';
 import { focusOnFile } from '../slices/cloudSlice';
-import ConfermDelete from '../components/ConfermDelete';
-import ShareURL from '../components/ShareURL';
+import ModalConfermDelete from '../components/ModalConfermDelete';
+import ModalShareURL from '../components/ModalShareURL';
 
 // При загрузке дополнительно проверяем авторизацию и получаем данные пользователя
 export async function loader() {
@@ -38,20 +38,6 @@ export default function UserInterface() {
     dispatch(focusOnFile(e.target.getAttribute('name')));
   }
 
-  // Подбор иконки для расширения файла
-  const handleName = (fileName) => {
-    const extension = fileName.slice((fileName.lastIndexOf(".") - 1 >>> 0) + 2);
-    if (extension === "") {
-      return ('/img/file_icons/file.png');
-    }
-  
-    if (appData.files.includes(extension)) {
-      return (`/img/file_icons/${extension}.png`);
-    }
-
-    return ('/img/file_icons/unknown.png');
-  }
-
   return (
     <div
       className="w-full pt-[3%] min-h-full bg-blue-200"
@@ -59,7 +45,7 @@ export default function UserInterface() {
       <div
         className="w-[94%] mx-auto min-h-52 bg-white rounded-xl"
       >
-        <CloudHeader />
+        <HeaderCloud />
         <section
           className="w-full p-5 rounded-b-xl"
         >
@@ -98,6 +84,7 @@ export default function UserInterface() {
                         size={file.size}
                         created={file.created}
                         focus={handleFocus}
+                        copy={true}
                       />
                     );
                   })}
@@ -118,8 +105,8 @@ export default function UserInterface() {
               )
             )} 
             <>
-              {cloudState.confirm ? (<ConfermDelete />) : (null)}
-              {cloudState.share ? (<ShareURL />) : (null)}
+              {cloudState.confirm ? (<ModalConfermDelete />) : (null)}
+              {cloudState.share ? (<ModalShareURL />) : (null)}
             </>
           </div>
         </section>

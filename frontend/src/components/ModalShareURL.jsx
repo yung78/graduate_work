@@ -3,8 +3,8 @@ import { deleteFocusOnFile, hideShareURL } from '../slices/cloudSlice';
 import { useGetURL } from '../app/customHooks';
 
 
-// КОМПОНЕНТ ОТОБРАЖЕНИЯ ССЫЛКИ ДЛЯ СКАЧИВАНИЯ
-export default function ShareURL() {
+// КОМПОНЕНТ ОТОБРАЖЕНИЯ ССЫЛКИ ДЛЯ СКАЧИВАНИЯ(модальное окно)
+export default function ModalShareURL() {
   const cloudState = useSelector((state) => state.cloud);
   const dispatch = useDispatch();
 

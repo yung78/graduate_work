@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { incorrectPassword } from '../slices/appSlice';
 
 //КОМПОНЕНТ ОПОВЕЩЕНИЯ ОБ УСПЕШНОЙ РЕГИСТРАЦИИ(модальное окно)
-export default function RegSuccess() {
+export default function ModalRegSuccess() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

@@ -6,7 +6,7 @@ import {
 } from '../slices/appSlice';
 
 //КОМПОНЕНТ ПОЛЕЙ ФОРМЫ РЕГИСТРАЦИИ
-export default function RegistrationField({atribute, text, actionData}) {
+export default function FieldRegistration({atribute, text, actionData}) {
   const appState = useSelector((state) => state.app);
   const dispatch = useDispatch();
   const isPasswordField = atribute.includes('password');

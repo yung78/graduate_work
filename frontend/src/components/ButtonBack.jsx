@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 // КОМПОНЕНТ КНОПКИ "ВЕРНУТЬСЯ"(назад)
-export default function BackButton() {
+export default function ButtonBack() {
   const navigate = useNavigate()
 
   return (

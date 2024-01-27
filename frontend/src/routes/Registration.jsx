@@ -1,7 +1,7 @@
 import { Form, useActionData, useNavigate } from 'react-router-dom';
-import RegistrationField from '../components/RegistrationField';
+import FieldRegistration from '../components/FieldRegistration';
 import { registration } from '../app/apiRequests';
-import RegSuccess from '../components/RegSuccess';
+import ModalRegSuccess from '../components/ModalRegSuccess';
 
 //Обработка и отправка данных формы(Form) регистрации на сервер
 export async function action({request}) {
@@ -63,34 +63,34 @@ export default function Registration() {
         </h1>
       </span>
       <>
-        {actionData?.success ? (<RegSuccess />) : (null)}
+        {actionData?.success ? (<ModalRegSuccess />) : (null)}
       </>
       
       <Form
         method="POST"
         className="w-4/5 rounded-lg flex flex-col justify-center items-center"
       >
-        <RegistrationField
+        <FieldRegistration
           atribute={"name"}
           text={"ИМЯ*"}
           actionData={actionData}
         />
-        <RegistrationField
+        <FieldRegistration
           atribute={"lastName"}
           text={"ФАМИЛИЯ"}
           actionData={actionData}
         />
-        <RegistrationField
+        <FieldRegistration
           atribute={"email"}
           text={"ЭЛЕКТРОННАЯ ПОЧТА*"}
           actionData={actionData}
         />
-        <RegistrationField
+        <FieldRegistration
           atribute={"password"}
           text={"ПАРОЛЬ*"}
           actionData={actionData}
         />
-        <RegistrationField
+        <FieldRegistration
           atribute={"passwordRepeat"}
           text={"ПОВТОРИТЕ ПАРОЛЬ*"}
           actionData={actionData}

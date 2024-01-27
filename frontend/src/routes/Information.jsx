@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import BackButton from '../components/BackButton';
+import ButtonBack from '../components/ButtonBack';
 
 //КОМПОНЕНТ(роут) С ИНФОРМАЦИЕЙ О ПРОЕКТЕ
 export default function Information() {
@@ -90,7 +90,7 @@ export default function Information() {
           `
         }
       </p>
-      <BackButton />
+      <ButtonBack />
     </div>
   );
 }

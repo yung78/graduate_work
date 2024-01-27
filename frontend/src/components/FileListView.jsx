@@ -3,7 +3,7 @@ import { getDownloadURL } from '../app/apiRequests';
 import { useSelector } from 'react-redux';
 
 //КОМПОНЕНТ ОТОБРАЖЕНИЯ ФАЙЛОВ ПОЛЬЗОВАТЕЛЯ СПИСКОМ
-export default function FileListView({ src, fileName, size, created, focus }) { 
+export default function FileListView({ src, fileName, size, created, focus, copy }) { 
   const cloudState = useSelector((state) => state.cloud);
 
   const handleCopy = async () => {
@@ -13,7 +13,7 @@ export default function FileListView({ src, fileName, size, created, focus }) {
 
   return (
     <div
-      className="file w-full h-14 p-2 flex items-center hover:bg-blue-100 focus:bg-blue-100 focus:hover:bg-blue-200 outline-none rounded-md cursor-default"
+      className={(copy ? "hover:bg-blue-100 focus:bg-blue-100 focus:hover:bg-blue-200" : "") + "file w-full h-14 p-2 flex items-center outline-none rounded-md cursor-default"}
       tabIndex={-1}
       name={fileName}
       onFocus={(e) => focus(e)}
@@ -42,12 +42,17 @@ export default function FileListView({ src, fileName, size, created, focus }) {
       <div
         className="w-[13%] h-5 flex justify-center"
       >
-        <div
-          className="w-5 h-5 hover:bg-gray-200 active:shadow-[0_0px_10px_4px_rgba(34,60,80,0.2)] cursor-pointer"
-          onClick={handleCopy}
-        >
-          <img src="/img/copylink.png" alt="copyLink" />
-        </div>
+        {copy ? (
+          <div
+            className="w-5 h-5 hover:bg-gray-200 active:shadow-[0_0px_10px_4px_rgba(34,60,80,0.2)] cursor-pointer"
+            onClick={handleCopy}
+          >
+            <img src="/img/copylink.png" alt="copyLink" />
+          </div>
+        ) : (
+          <></>
+        )
+        }
       </div>
     </div>
   );
