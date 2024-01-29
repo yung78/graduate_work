@@ -31,6 +31,7 @@ export default function FieldRegistration({atribute, text, actionData}) {
     }
   };
 
+  // Обработчикки ввода пароля
   const handlers = {
     password: handlePassword,
     passwordRepeat: handlePasswordRepeat,

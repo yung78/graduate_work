@@ -1,27 +1,25 @@
 import { redirect, useLoaderData } from 'react-router-dom';
-import { isAdmin, getPerson } from '../app/apiRequests';
+import { isAdmin, getPerson, deleteFile } from '../app/apiRequests';
 import { useLogin, useOutsideFileClick } from '../app/customHooks';
 import FileListView from '../components/FileListView';
 import FileTileView from '../components/FileTileView';
-import {handleName} from '../app/appData';
+import {handleName} from '../app/helpers';
 import { useDispatch, useSelector } from 'react-redux';
 import HeaderCloud from '../components/HeaderCloud';
-import { focusOnFile } from '../slices/cloudSlice';
+import { deleteFileFromFiles, deleteFocusOnFile, focusOnFile, hideDeleteConfirm } from '../slices/cloudSlice';
 import ModalConfermDelete from '../components/ModalConfermDelete';
 import ModalShareURL from '../components/ModalShareURL';
 
-// При загрузке дополнительно проверяем авторизацию и получаем данные пользователя
+// Проверяем авторизацию и получаем данные аккаунта
 export async function loader() {
   const check = await isAdmin();
   if (check.admin) {
     return redirect('/admin');
   }
   const person = await getPerson();
-
   if (person.error) {
     return redirect('/');
   }
-
   return { person };
 }
 
@@ -30,10 +28,10 @@ export default function UserInterface() {
   const cloudState = useSelector((state) => state.cloud);
   const { person } = useLoaderData();
   const dispatch = useDispatch();
-  useLogin(person);
+  useLogin({person});
   useOutsideFileClick();
 
-  // Записываем имя файла в состояние
+  // Обработчик фокусировки
   const handleFocus = (e) => {
     dispatch(focusOnFile(e.target.getAttribute('name')));
   }
@@ -49,6 +47,18 @@ export default function UserInterface() {
         <section
           className="w-full p-5 rounded-b-xl"
         >
+          <>
+            {cloudState.share ? (<ModalShareURL />) : (null)}
+            {cloudState.confirm ? (
+              <ModalConfermDelete
+                state={cloudState}
+                request={deleteFile}
+                hide={hideDeleteConfirm}
+                delFocus={deleteFocusOnFile}
+                delElement={deleteFileFromFiles}
+              />
+            ) : (<></>)}
+          </>
           {cloudState.message ? (
             <div
               className='mx-auto h-3 block text-center text-red-800'
@@ -104,15 +114,9 @@ export default function UserInterface() {
                 </>
               )
             )} 
-            <>
-              {cloudState.confirm ? (<ModalConfermDelete />) : (null)}
-              {cloudState.share ? (<ModalShareURL />) : (null)}
-            </>
           </div>
         </section>
       </div>
     </div>
   );
 }
-
-

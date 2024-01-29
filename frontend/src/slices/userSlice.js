@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   id: '',
@@ -6,7 +6,7 @@ const initialState = {
   lastName: '',
   email: '',
   avatar: '/img/unknown_user.png',
-  changePersonDataMessage: null
+  changePersonDataMessage: null,
 };
 
 export const userSlice = createSlice({
@@ -24,7 +24,7 @@ export const userSlice = createSlice({
       if (avatar !== '') {
         return { id, name, lastName, email, avatar };
       }
-      return { ...state, id, name, lastName, email }
+      return { ...state, id, name, lastName, email };
     },
     changeField: (state, action) => {
       const key = action.payload[0];
@@ -37,7 +37,7 @@ export const userSlice = createSlice({
     },
     resetChangeDataMessage: (state) => {
       return { ...state, changePersonDataMessage: null };
-    }
+    },
   },
 });
 
@@ -48,6 +48,7 @@ export const {
   changeField,
   addChangeDataMessage,
   resetChangeDataMessage,
+
 } = userSlice.actions;
 
-export default userSlice.reducer; 
+export default userSlice.reducer;

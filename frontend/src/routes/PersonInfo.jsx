@@ -1,62 +1,32 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { redirect, useActionData, useLoaderData, useNavigate } from 'react-router-dom';
+import { redirect, useLoaderData, useNavigate } from 'react-router-dom';
 import { useLogin } from '../app/customHooks';
-import { changePersonData, getPerson, loadAvatar } from '../app/apiRequests';
+import { getPerson, loadAvatar } from '../app/apiRequests';
 import FieldPersonInfo from '../components/FieldPersonInfo';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { changeField } from '../slices/userSlice';
 import ButtonBack from '../components/ButtonBack';
+import appData from '../app/appData';
+import { showMsg } from '../app/helpers';
 
-//Загрузка данных персоны
+//Загрузка данных аккаунта
 export async function loader() {
   const person = await getPerson();
-
   if (person.error) {
     return redirect('/');
   }
-
   return { person };
 }
 
-// Отправка изменений поля на сервер
-export async function action({ request }) {
-  const formData = await request.formData();
-  const data = Object.fromEntries(formData);
-
-  // Простая валидация изменения адреса почты/пароля
-  if (data.newPassword && data.newPassword.trim().length < 5) {
-    return {error: 'ПАРОЛЬ МИНИМУМ 6 СИМВОЛОВ!'}
-  }
-
-  if (data.email && (!data.email.includes('@') || data.email.trim() === '')) {
-    return {error: 'НЕКОРРЕКТНАЯ ПОЧТА!'}
-  }
-
-  // Если изменяемые поля валидны - отправляем запрос
-  const response = await changePersonData(data);
-  
-  // Обработчики ответа
-  if (response.error === 'not authorized') {
-    return redirect('/');
-  }
-
-  if (response.error === 'wrong password') {
-    return {error: 'НЕ ВЕРНЫЙ ПАРОЛЬ!'}
-  }
-
-  return {message: 'УСПЕШНО!'};
-}
-
-//КОМПОНЕНТ(роут) СТРАНИЦЫ ЛИЧНЫХ ДАННЫХ ПЕРСОНЫ(юзера/админа)
+//КОМПОНЕНТ(роут) СТРАНИЦЫ ЛИЧНЫХ ДАННЫХ АККАУНТА
 export default function PersonInfo() {
   const personState = useSelector((state) => state.user);
   const { person } = useLoaderData();
-  const message = useActionData();
   const inputRef = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
-  useLogin(person);
+  const [message, setMessage] = useState(false);
+  useLogin({ person });
 
   // Обработчик нажатия кнопки изменения аватара
   const handleLoadAvatar = () => {
@@ -69,9 +39,8 @@ export default function PersonInfo() {
       const formData = new FormData();
       if (e.target.files.length > 1 || !e.target.files[0].type.includes('image')) {
         e.target.value = "";
-        return console.log('BAD'); // !!!!!!! validation message
+        return showMsg({ error: 'ЗАГРУЖАЙТЕ КАРТИНКУ!'}, 3000, setMessage);
       }
-
       formData.append('avatar', e.target.files[0]);
       const response = await loadAvatar(formData);
       if (response.error) {
@@ -79,7 +48,7 @@ export default function PersonInfo() {
         return navigate('/');
       }
       e.target.value = "";
-
+      showMsg({success: 'УСПЕШНО!'}, 3000, setMessage);
       return dispatch(changeField(['avatar', response.avatar]));
     }
   }
@@ -99,7 +68,7 @@ export default function PersonInfo() {
       </span>
       <div>
         <div
-          className="w-52 mb-10"
+          className="w-44 mb-4"
         >
           <img
             src={personState.avatar}
@@ -120,42 +89,26 @@ export default function PersonInfo() {
           изменить
         </p>
         </div>
-        
       </div>
-      <FieldPersonInfo
-        atribute={"name"}
-        text={"Имя:"}
-      />
-      <FieldPersonInfo
-        atribute={"lastName"}
-        text={"Фамилия:"}
-      />
-      <FieldPersonInfo
-        atribute={"email"}
-        text={"E-mail:"}
-      />
-      <FieldPersonInfo
-        atribute={"password"}
-        text={"Пароль:"}
-      />
+      <p
+        className={`${message.error ? 'text-red-700' : 'text-black' } h-4 mb-3 text-center text-sm font-bold`}
+      >
+        {message.error ? message.error : message.success ? message.success : ''}
+      </p>
       <>
-        {message ? (
-          message.error ? (
-            <p
-              className="text-lg text-red-700 font-bold text-centerxt"
-            >
-              {message.error}
-            </p>
-          ) : (
-            <p
-              className="text-lg text-centerxt"
-            >
-              {message.message}
-            </p>
-          )
-        ) : (
-          <></>
-        )}
+        {Object.keys(appData.fields).map((atr, index) => {
+            if (atr === 'isAdmin') {
+              return null;
+            }
+          return (
+            <FieldPersonInfo
+              key={index}
+              atribute={atr}
+              text={appData.fields[atr]}
+              setMessage={setMessage}
+            />
+          );
+        })}
       </>
       <ButtonBack />
     </div>

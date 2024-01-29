@@ -1,5 +1,5 @@
 // КОМПОНЕНТ КНОПКИ ИЗМЕНИТЬ
-export default function ButtonChange({handler}) {
+export default function ButtonChange({ handler }) {
 
   return (
     <div

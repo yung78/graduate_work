@@ -2,18 +2,15 @@ import { Form, useActionData, useNavigate } from 'react-router-dom';
 import FieldRegistration from '../components/FieldRegistration';
 import { registration } from '../app/apiRequests';
 import ModalRegSuccess from '../components/ModalRegSuccess';
+import appData from '../app/appData';
 
-//Обработка и отправка данных формы(Form) регистрации на сервер
+// Обработка и отправка данных формы(Form) регистрации на сервер
 export async function action({request}) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
   let actionData = { errors: {}, success: false};
 
   // Простая валидация полей (кроме фамилии)
-  if (typeof data.name !== 'string' || data.name.trim() === '') {
-    actionData.errors.name = 'НЕКОРРЕКТНОЕ ИМЯ!';
-  }
-
   if (typeof data.email !== 'string' || data.email.trim() === '' || !data.email.includes('@')) {
     actionData.errors.email = 'НЕКОРРЕКТНАЯ ПОЧТА!';
   }
@@ -28,26 +25,24 @@ export async function action({request}) {
 
   if (Object.keys(actionData.errors).length === 0) {
     const response = await registration(data);
-    //Проверка успешности регистрации
-    if (response.success) {
+    // Проверка успешности регистрации
+    if ('success' in response) {
       actionData.success=true;
       return actionData;
     }
-
     actionData.errors.response = `ПОЛЬЗОВАТЕЛЬ С ЭЛЕКТРОННОЙ ПОЧТОЙ ${data.email} УЖЕ ЗАРЕГИСТРИРОВАН`;
   }
-
   return actionData;
 }
 
-//КОМПОНЕНТ(роут) СТРАНИЦЫ РЕГИСТРАЦИИ
+// КОМПОНЕНТ(роут) СТРАНИЦЫ РЕГИСТРАЦИИ
 export default function Registration() {
   const actionData = useActionData();
   const navigate = useNavigate();
 
   const handleCancel = () => {
     return navigate('/');
-  } 
+  };
 
   return (
     <div
@@ -70,29 +65,19 @@ export default function Registration() {
         method="POST"
         className="w-4/5 rounded-lg flex flex-col justify-center items-center"
       >
+        {Object.keys(appData.fields).map((atr, index) => {
+          return (
+            <FieldRegistration
+              key={index}
+              atribute={atr}
+              text={appData.fields[atr]}
+              actionData={actionData}
+            />
+          );
+        })}
         <FieldRegistration
-          atribute={"name"}
-          text={"ИМЯ*"}
-          actionData={actionData}
-        />
-        <FieldRegistration
-          atribute={"lastName"}
-          text={"ФАМИЛИЯ"}
-          actionData={actionData}
-        />
-        <FieldRegistration
-          atribute={"email"}
-          text={"ЭЛЕКТРОННАЯ ПОЧТА*"}
-          actionData={actionData}
-        />
-        <FieldRegistration
-          atribute={"password"}
-          text={"ПАРОЛЬ*"}
-          actionData={actionData}
-        />
-        <FieldRegistration
-          atribute={"passwordRepeat"}
-          text={"ПОВТОРИТЕ ПАРОЛЬ*"}
+          atribute={'passwordRepeat'}
+          text={'ПОВТОРИТЕ ПАРОЛЬ*'}
           actionData={actionData}
         />
         <div
@@ -105,7 +90,7 @@ export default function Registration() {
             Ок
           </button>
           <button
-            type={"button"}
+            type="button"
             className="w-20 h-9 mb-4 border-2 rounded-md border-gray-300 bg-gray-300 hover:border-gray-400 text-xs text-center font-bold active:shadow-[0_0px_10px_4px_rgba(34,60,80,0.2)]"
             onClick={handleCancel}
           >
@@ -126,11 +111,16 @@ export default function Registration() {
           null
         )}
       </div>
-      <div
-        className="mt-5 w-1/2 text-sm"
+      <p
+        className="mt-2 w-1/2 text-sm"
+      >
+        Пароль должен содержать минимум 6 символов.
+      </p>
+      <p
+        className="mt-2 w-1/2 text-sm"
       >
         * - поля обязательные для заполнения.
-      </div>
+      </p>
     </div>
   );
 }

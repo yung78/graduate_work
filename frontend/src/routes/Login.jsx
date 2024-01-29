@@ -7,7 +7,6 @@ import { useLogout } from '../app/customHooks';
 // Проверка аутентификации и авторизации при входе на главную страницу(корневой роут)
 export async function loader() {
   const person = await getPerson();
-
   if (person.error) {
     return null;
   } else if (person.isAdmin) {
@@ -25,9 +24,7 @@ export async function action({ request }) {
   // Простая валидация полей логина и пароля
   if (typeof data.email !== 'string' || data.email.trim() === '' || !data.email.includes('@')) {
     errors.email = 'НЕКОРРЕКТНАЯ ПОЧТА';
-  }
-
-  if (typeof data.password !== 'string' || data.password.trim().length < 5) {
+  } else if (typeof data.password !== 'string' || data.password.trim().length < 5) {
     errors.password = 'НЕКОРРЕКТНЫЙ ПАРОЛЬ';
   }
 
@@ -41,7 +38,6 @@ export async function action({ request }) {
       if (check.admin) {
         return redirect('/admin');
       }
-  
       return redirect('/user');
     }
     // Аутентификация не пройдена

@@ -1,49 +1,74 @@
 import localforage from 'localforage';
+import baseFetch from './baseFetch';
 
+//ФУНКЦИИ ОТПРАВКИ ЗАПРОСОВ АДМИНИСТРАТОРА НА СЕРВЕР:
 
-// Функция запроса данных по всем пользователям
+// Функция запроса данных всех аккаунтов
 export async function getUsersData() {
-  try {
-    // Запрос с использованием токена сеанса в заголовке
-    const response = await fetch(process.env.REACT_APP_ADMIN_GET_ALL, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': await localforage.getItem('sessionToken'),
-      },
-    });
-
-    if (response.status !== 200 && response.status !== 403) {
-      throw new Error(response.statusText);
-    }
-
-    const result = await response.json();
-
-    return result;
-  } catch(err) {
-    throw new Error(err.message);
-  }
+  return baseFetch({
+    url: process.env.REACT_APP_ADMIN_GET_ALL,
+    method: 'GET',
+    headers: {
+      'Authorization': await localforage.getItem('sessionToken')
+    },
+  });
 }
 
-// 
+// Функция запроса конкретного аккаунта
 export async function getUser(id) {
-  try {
-    // Запрос с использованием токена сеанса в заголовке
-    const response = await fetch(process.env.REACT_APP_ADMIN_GET_ONE + id, {
-      method: 'GET',
-      headers: {
-        'Authorization': await localforage.getItem('sessionToken'),
-      },
-    });
+  return baseFetch({
+    url: process.env.REACT_APP_ADMIN_GET_ONE + id,
+    method: 'GET',
+    headers: {
+      'Authorization': await localforage.getItem('sessionToken')
+    },
+  });
+}
 
-    if (response.status !== 200 && response.status !== 403) {
-      throw new Error(response.statusText);
-    }
+// Функция создания аккаунта
+export async function addAccount(data) {
+  return baseFetch({
+    url: process.env.REACT_APP_ADMIN_ADD_ONE,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': await localforage.getItem('sessionToken'),
+    },
+    body: JSON.stringify(data),
+  });
+}
 
-    const data = await response.json();
+// Функция изменения данных конкретного аккаунта
+export async function changeAccount(data) {
+  return baseFetch({
+    url: process.env.REACT_APP_ADMIN_CHANGE_ONE,
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': await localforage.getItem('sessionToken'),
+    },
+    body: JSON.stringify(data),
+  });
+}
 
-    return data;
-  } catch(err) {
-    throw new Error(err.message);
-  }
+// Функция изменения аватара конкретного аккаунта
+export async function changeAvatar(formData) {
+  return baseFetch({
+    url: process.env.REACT_APP_ADMIN_CHANGE_ONE,
+    method: 'PATCH',
+    headers: {
+      'Authorization': await localforage.getItem('sessionToken'),
+    },
+    body: formData,
+  });
+}
+
+// Функция удаления конкретного аккаунта
+export async function deleteAccount(id) {
+  return baseFetch({
+    url: process.env.REACT_APP_ADMIN_DELETE_ONE + id,
+    method: 'DELETE',
+    headers: { 'Authorization': await localforage.getItem('sessionToken'), },
+    del: true,
+  });
 }

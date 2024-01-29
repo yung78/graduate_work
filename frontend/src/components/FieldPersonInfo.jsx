@@ -1,78 +1,68 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Form } from 'react-router-dom';
 import { changeField } from '../slices/userSlice';
+import { useNavigate } from 'react-router-dom';
+import { changePersonData } from '../app/apiRequests';
+import { showMsg } from '../app/helpers';
 
-//КОМПОНЕНТ ИЗМЕНЯЕМЫХ ПОЛЕЙ ЛИЧНЫХ ДАННЫХ
-export default function FieldPersonInfo({atribute, text}) {
+//КОМПОНЕНТ ИЗМЕНЯЕМЫХ ПОЛЕЙ СВОИХ ЛИЧНЫХ ДАННЫХ
+export default function FieldPersonInfo({atribute, text, setMessage }) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const personState = useSelector((state) => state.user);
+  const userState = useSelector((state) => state.user);
+  const [fieldState, setfieldState] = useState(false);
 
-  // Состояния 'флагов' для изменения полей личных данных этого компонента
-  const [changeName, setChangeName] = useState(false);
-  const [changeLastName, setChangeLastName] = useState(false);
-  const [changeEmail, setChangeEmail] = useState(false);
-  const [changePassword, setChangePassword] = useState(false);
+  // Обработчик нажатия кнопки "измененить"(открытие полей)
+  const handleChange = () => {
+    setfieldState(true);
+  };
 
-  const stateFields = {
-    name: changeName,
-    lastName: changeLastName,
-    email: changeEmail,
-    password: changePassword,
-  }
+  // Обработчик нажатия кнопки "отмена"(закрытие полей)
+  const handleCancel = () => {
+    setfieldState(false);
+  };
 
-  // Обработчики изменения 'флагов' состояния полей личных данных
-  const handleChangeName = () => {
-    setChangeName(true);
-  }
+  // Обработчик нажатия кнопки "отмена"(запрос с изменениями на сервер, и изменение полей)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData);
 
-  const handleChangeLastName = () => {
-    setChangeLastName(true);
-  }
-
-  const handleChangeEmail = () => {
-    setChangeEmail(true);
-  }
-
-  const handleChangePassword = () => {
-    setChangePassword(true);
-  }
-
-  const handlers = {
-    name: handleChangeName,
-    lastName: handleChangeLastName,
-    email: handleChangeEmail,
-    password: handleChangePassword,
-  }
-
-  // Внесение изменений в состояние пользователя по атрибуту name полей личных данных(исключая пароль)
-  const handleChangeField = (e) => {
+    // Простая валидация 
+    if ('newPassword' in data && data['newPassword'].trim().length < 5) {
+      showMsg({ error:'ПАРОЛЬ МИНИМУМ 6 СИМВОЛОВ!' }, 3000, setMessage);
+      return;
+    } else if ('email' in data && (!data.email.includes('@') || data.email.trim() === '')) {
+      showMsg({ error:'НЕКОРРЕКТНАЯ ПОЧТА!' }, 3000, setMessage);
+      return;
+    }
+    // Если изменяемые поля валидны - отправляем запрос
+    const response = await changePersonData(data);
+    
+    // Обработка контролируемых ошибок
+    if ('error' in response) {
+      response.error === 'not authorized' ? navigate('/') : showMsg({ error: 'НЕ ВЕРНЫЙ ПАРОЛЬ!' }, 3000, setMessage);
+      return;
+    }
+    showMsg({success: 'УСПЕШНО!'}, 3000, setMessage);
+    
+    // Меняем значение полей
     const key = e.target[atribute].name;
     const value = e.target[atribute].value;
     if (key === 'password') {
-      return
+      return setfieldState(false);
     }
     dispatch(changeField([key, value]));
-  }
-
-  // Закрытие всех полей input и кнопок сохранить
-  const handleCloseChangeFields = () => {
-    setChangeName(false);
-    setChangeLastName(false);
-    setChangeEmail(false);
-    setChangePassword(false);
+    setfieldState(false);
   }
 
   return (
-    <Form
+    <form
       className="w-3/5 min-h-16 mb-4 flex flex-col justify-center items-center"
       method='POST'
-      onSubmit={(e)=> {
-        handleChangeField(e);
-        handleCloseChangeFields();
-      }}
+      onSubmit={(e)=> handleSubmit(e)}
     >
-      {stateFields[atribute]? (
+      {fieldState? (
         <>
           {atribute === 'password' ? (
             <p
@@ -88,7 +78,7 @@ export default function FieldPersonInfo({atribute, text}) {
             type="text"
             name={atribute}
             className="w-full h-9 px-2 border-2 border-gray-300 bg-blue-100 rounded-md outline-none focus:border-gray-400"
-            defaultValue={atribute === 'password' ? '' : personState[atribute]}
+            defaultValue={atribute === 'password' ? '' : userState[atribute]}
           />
           {atribute === 'password' ? (
             <>
@@ -117,7 +107,7 @@ export default function FieldPersonInfo({atribute, text}) {
             <button
               className="mx-5 text-center text-gray-800 font-bold cursor-pointer hover:text-black"
               type="button"
-              onClick={handleCloseChangeFields}
+              onClick={handleCancel}
             >
               отменить
             </button>
@@ -126,21 +116,23 @@ export default function FieldPersonInfo({atribute, text}) {
       ) : (
         <>
           <div
-            className="w-full h-9 px-2 border-2 border-gray-300 bg-blue-100 rounded-md outline-none focus:border-gray-400 leading-8"
+            className="w-full h-9 px-2 border-2 text-[11px] text-gray-600 font-bold border-gray-300 bg-blue-100 rounded-md outline-none focus:border-gray-400 leading-8"
           >
             {text}&nbsp;&nbsp;
-            <span>
-              {atribute === 'password' ? '********' : personState[atribute] }
+            <span
+              className="text-lg text-black font-normal"
+            >
+              {atribute === 'password' ? '********' : userState[atribute] }
             </span>
           </div>
           <span
             className="mx-5 text-sm text-center text-gray-800 font-bold cursor-pointer hover:text-black"
-            onClick={handlers[atribute]}
+            onClick={handleChange}
           >
             изменить
           </span>
         </>
       )}
-    </Form>
+    </form>
   );
 }

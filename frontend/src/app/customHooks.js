@@ -4,16 +4,20 @@ import { login, logout } from '../slices/appSlice';
 import { loadPersonData, resetPersonData } from '../slices/userSlice';
 import { addUserFiles, deleteFocusOnFile, hideDeleteConfirm, hideShareURL, resetCloud, saveDownloadURL } from '../slices/cloudSlice';
 import { getDownloadURL } from './apiRequests';
-import { deleteFocusOnUser } from '../slices/adminSlice';
+import { deleteFocusOnAcc, hideAddModal, hideDelete, loadData, resetAdmin} from '../slices/adminSlice';
+import { useNavigate } from 'react-router-dom';
 
 //Хук загрузки данных в состояния при прохождении аутентификации(вход)
-export function useLogin(data) {
+export function useLogin({ person, data }) {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(login());
-    dispatch(loadPersonData(data));
-    dispatch(addUserFiles(data.files));
-  },[]);
+    dispatch(loadPersonData(person));
+    dispatch(addUserFiles(person.files));
+    if(data) {
+      dispatch(loadData(data));
+    }
+  },[dispatch, person, data]);
 }
 
 //Хук очистки данных состояний при обратной аутентификации(выход)
@@ -23,7 +27,8 @@ export function useLogout() {
     dispatch(logout());
     dispatch(resetPersonData());
     dispatch(resetCloud());
-  },[]);
+    dispatch(resetAdmin());
+  },[dispatch]);
 }
 
 //Хук обработки кликов для снятия фокуса с файла/пользователя
@@ -35,10 +40,12 @@ export function useOutsideFileClick() {
         return;
       }
 
-      dispatch(deleteFocusOnUser());
+      dispatch(deleteFocusOnAcc());
       dispatch(deleteFocusOnFile());
       dispatch(hideShareURL());
       dispatch(hideDeleteConfirm());
+      dispatch(hideDelete());
+      dispatch(hideAddModal())
       return;
     }
 
@@ -46,18 +53,22 @@ export function useOutsideFileClick() {
     return () => {
       document.removeEventListener('mousedown', handleOutsideFileClick);
     }
-  }, []);
+  }, [dispatch]);
 }
 
+// Хук получения ссылки на загрузку файла сторонним пользователем
 export function useGetURL() {
   const dispatch = useDispatch();
   const cloudState = useSelector((state) => state.cloud);
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
       const response = await getDownloadURL(cloudState.onFocus);
+      if (response.error) {
+        return navigate('/')
+      }
       dispatch(saveDownloadURL(response.url));
     })();
-  }, []);
+  }, [cloudState.onFocus, dispatch, navigate]);
 }
-

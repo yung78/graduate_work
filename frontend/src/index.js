@@ -8,16 +8,17 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Root from './routes/Root';
-import {action as rootAction} from './components/Header';
-import Registration, {action as registrationAction} from './routes/Registration';
+import { action as rootAction } from './components/Header';
+import Registration, { action as registrationAction } from './routes/Registration';
 import Login, { action as loginAction, loader as loginLoader } from './routes/Login';
 import ErrorPage from './routes/ErrorPage';
 import Information from './routes/Information';
 import UserInterface, { loader as userLoader } from './routes/UserInterface';
-import PersonInfo, { action as personAction, loader as personLoader } from './routes/PersonInfo';
+import PersonInfo, { loader as personLoader } from './routes/PersonInfo';
 import AdminInterface, { loader as adminLoader } from './routes/AdminInterface';
-import Download, {loader as downloadLoader} from './routes/Download';
-import UserCard, {loader as userCardLoader} from './routes/UserCard';
+import Download, { loader as downloadLoader } from './routes/Download';
+import AccountCard, { loader as accountCardLoader } from './routes/AccountCard';
+
 
 const router = createBrowserRouter([
   {
@@ -52,7 +53,6 @@ const router = createBrowserRouter([
           {
             path: 'person_info',
             element: <PersonInfo />,
-            action: personAction,
             loader: personLoader,
           },
           {
@@ -67,8 +67,8 @@ const router = createBrowserRouter([
           },
           {
             path: 'user_card/:params',
-            element: <UserCard />,
-            loader: userCardLoader,
+            element: <AccountCard/>,
+            loader: accountCardLoader,
           },
         ]
       },

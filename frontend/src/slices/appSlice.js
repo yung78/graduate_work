@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   error: null,
@@ -61,6 +61,7 @@ export const {
   logout,
   showNavigation,
   hideNavigation,
+
 } = appSlice.actions;
 
 export default appSlice.reducer;

@@ -1,22 +1,18 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { addUserFiles, deleteFocusOnFile, hideDeleteConfirm } from '../slices/cloudSlice';
-import { deleteFile, getPerson } from '../app/apiRequests';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 //КОМПОНЕНТ ПОДТВЕРЖДЕНИЯ УДАЛЕНИЯ ФАЙЛА(модальное окно)
-export default function ModalConfermDelete() {
-  const cloudState = useSelector((state) => state.cloud);
+export default function ModalConfermDelete({ state, request, hide, delFocus, delElement, account=false }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   //Обработчик нажатия кнопки "Удалить"
   const handleDelete = async () => {
-    const response = await deleteFile(cloudState.onFocus);
+    const response = await request(state.onFocus);
     if (response.status === 204) {
-      const person = await getPerson();
-      dispatch(addUserFiles(person.files));
-      dispatch(deleteFocusOnFile());
-      return dispatch(hideDeleteConfirm());
+      dispatch(delElement(state.onFocus));
+      dispatch(delFocus());
+      return dispatch(hide());
     }
 
     if (response.status === 403) {
@@ -26,8 +22,8 @@ export default function ModalConfermDelete() {
   
   //Обработчик нажатия кнопки "Отмена"
   const handleCancel = () => {
-    dispatch(hideDeleteConfirm());
-    dispatch(deleteFocusOnFile());
+    dispatch(hide());
+    dispatch(delFocus());
   };
 
   return (
@@ -38,7 +34,7 @@ export default function ModalConfermDelete() {
         className="modal w-[300px] p-4 relative rounded-md bg-white box-border z-20 flex flex-col flex-wrap items-center text-center"
       >
         <p>
-          Файл <strong>"{cloudState.onFocus}"</strong> будет удален безвозвратно. Вы уверены?
+          {account ? 'Аккфунт с id: ' : 'Файл '}<strong>"{state.onFocus}"</strong> будет удален безвозвратно. Вы уверены?
         </p>
         <div
           className='w-full mt-4 flex justify-around'

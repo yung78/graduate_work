@@ -14,7 +14,7 @@ export default function ButtonCloudHeader({ btnName, src }) {
 
   // Обработчики кнопок управления
   const buttonHandlers = {
-    'скачать': () => { cloudState.onFocus ? (getFile(cloudState.onFocus)) : (dispatch(showMessage())) },
+    'скачать': () => handleSaveFile(getFile),
     'поделиться': () => { cloudState.onFocus ? (dispatch(showShareURL())) : (dispatch(showMessage())) },
     'загрузить': () => { inputRef.current.click() },
     'удалить': () => { cloudState.onFocus ? (dispatch(showDeleteConfirm())) : (dispatch(showMessage())) },
@@ -25,18 +25,34 @@ export default function ButtonCloudHeader({ btnName, src }) {
     buttonHandlers[btnName]();
   };
 
+  // Обработчик сохранения(скачки) файла на клиенте
+  const handleSaveFile = async (f) => {
+    if (cloudState.onFocus) {
+      const response = await f(cloudState.onFocus);
+      if (response){
+        return navigate('/');
+      }
+    } else {
+      (dispatch(showMessage()));
+    }
+    return;
+  }
+
   // Обработчик изменения файлов input (отправка файлов на сервер)
   const handleFileChange = async (e) => {
     if (e.target.files) {
       const formData = new FormData();
-      
       for (const file of e.target.files) {
         formData.append('file', file);
-        formData.append('name', file.name);
+        // Проверка дублирования имен файлов
+        if (cloudState.files.map((el) => el.name).includes(file.name)) {
+          formData.append('name', file.name.replace(/^([^.]+)$|(\.[^.]+)$/i, '$1_copy_$2'))
+        } else {
+          formData.append('name', file.name);
+        }
         formData.append('size', file.size);
         formData.append('user', userState.id);
       }
-
       const response = await sendFiles(formData);
       if (response.error) {
         e.target.value = "";
@@ -45,7 +61,6 @@ export default function ButtonCloudHeader({ btnName, src }) {
       e.target.value = "";
       return dispatch(addUserFiles(response.files));
     }
-
     return;
   }
 

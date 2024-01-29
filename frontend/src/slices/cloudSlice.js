@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   view: false,
@@ -14,14 +14,14 @@ export const cloudSlice = createSlice({
   name: 'cloud',
   initialState,
   reducers: {
-    resetCloud: () => {
-      return { ...initialState };
-    },
     changeView: (state) => {
       return { ...state, view: !state.view };
     },
     addUserFiles: (state, action) => {
       return { ...state, files: action.payload };
+    },
+    deleteFileFromFiles: (state, action) => {
+      return { ...state, files: state.files.filter((el) => el.name !== action.payload) };
     },
     focusOnFile: (state, action) => {
       return { ...state, onFocus: action.payload }; 
@@ -48,8 +48,11 @@ export const cloudSlice = createSlice({
       return { ...state, message: false };
     },
     saveDownloadURL: (state, action) => {
-      return { ...state, dounloadURL: action.payload}
-    }
+      return { ...state, dounloadURL: action.payload};
+    },
+    resetCloud: () => {
+      return { ...initialState };
+    },
   }
 });
 
@@ -57,6 +60,7 @@ export const {
   resetCloud,
   changeView,
   addUserFiles,
+  deleteFileFromFiles,
   focusOnFile,
   deleteFocusOnFile,
   showDeleteConfirm,
@@ -66,6 +70,7 @@ export const {
   showMessage,
   hideMessage,
   saveDownloadURL,
+
 } = cloudSlice.actions;
 
 export default cloudSlice.reducer;

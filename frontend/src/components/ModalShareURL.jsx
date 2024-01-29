@@ -7,20 +7,18 @@ import { useGetURL } from '../app/customHooks';
 export default function ModalShareURL() {
   const cloudState = useSelector((state) => state.cloud);
   const dispatch = useDispatch();
-
   useGetURL();
 
-  
-  //Обработчик нажатия кнопки "Закрыть"
+  // Обработчик нажатия кнопки "Закрыть"
   const handleCancel = () => {
     dispatch(hideShareURL());
     dispatch(deleteFocusOnFile());
   };
 
-
+  // Обработчик нажатия кнопки "копировать ссылку" 
   const handleCopy = (link) => {
     navigator.clipboard.writeText(link);
-  }
+  };
 
   return (
     <div 

@@ -1,6 +1,6 @@
 import { useRouteError } from 'react-router-dom';
 
-//КОМПОНЕНТ(роут) НЕПРЕДВИДЕННЫХ ОШИБОК
+// КОМПОНЕНТ(роут) НЕПРЕДВИДЕННЫХ ОШИБОК
 export default function ErrorPage() {
   const error = useRouteError();
   console.error(error);

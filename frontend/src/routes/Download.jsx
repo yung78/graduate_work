@@ -1,36 +1,22 @@
 import { useDispatch } from 'react-redux';
 import { hideNavigation } from '../slices/appSlice';
-import appData from '../app/appData';
 import { getFileByLink } from '../app/apiRequests';
 import { useLoaderData } from 'react-router-dom';
 import { saveAs } from 'file-saver';
 import { useEffect } from 'react';
+import { handleName } from '../app/helpers';
 
 //Получаем данные с сервера по полученной ссылке
 export async function loader({ params }) {
   const data = await getFileByLink(params.params);
-
   return data;
 }
 
+// КОМПОНЕНТ(роут) СОХРАНЕНИЯ ФАЙЛА СТОРОННИМ ПОЛЬЗОВАТЕЛЕМ ПО ССЫЛКЕ
 export default function Download() {
   const data = useLoaderData();
   const dispatch = useDispatch();
   const fileName = Object.keys(data)[0];
-
-  // Подбор иконки для расширения файла
-  const handleName = (fileName) => {
-    const extension = fileName.slice((fileName.lastIndexOf(".") - 1 >>> 0) + 2);
-    if (extension === "") {
-      return ('/img/file_icons/file.png');
-    }
-  
-    if (appData.files.includes(extension)) {
-      return (`/img/file_icons/${extension}.png`);
-    }
-
-    return ('/img/file_icons/unknown.png');
-  };
 
   // Убираем шапку с навигацией
   useEffect(() => {
@@ -40,14 +26,14 @@ export default function Download() {
   // Обработчик нажатия кнопки "Сохранить"(сохранение файла)
   const handleSave = () => {
     return saveAs(data[fileName], fileName);
-  }
+  };
 
   return (
     <div
       className="w-full pt-[20%] min-h-full bg-blue-200"
     >
       <div
-        className="w-[94%] mx-auto flex flex-col justify-around items-center min-h-60 bg-white rounded-xl"
+        className="w-[94%] md:w-[60%] mx-auto flex flex-col justify-around items-center min-h-60 bg-white rounded-xl"
       >
         {data.error ? (
           <div
@@ -96,4 +82,3 @@ export default function Download() {
     </div>
   );
 }
-

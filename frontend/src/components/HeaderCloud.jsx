@@ -11,7 +11,7 @@ export default function HeaderCloud() {
   // Изменение вида отображения файлов в окне хранилища
   const handleClick = () => {
     dispatch(changeView());
-  }
+  };
 
   return (
 

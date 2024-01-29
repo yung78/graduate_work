@@ -1,19 +1,21 @@
 import dateFormat from 'dateformat';
 import { getDownloadURL } from '../app/apiRequests';
 import { useSelector } from 'react-redux';
+import { fileSize } from '../app/helpers';
 
-//КОМПОНЕНТ ОТОБРАЖЕНИЯ ФАЙЛОВ ПОЛЬЗОВАТЕЛЯ СПИСКОМ
+// КОМПОНЕНТ ОТОБРАЖЕНИЯ ФАЙЛОВ ПОЛЬЗОВАТЕЛЯ СПИСКОМ
 export default function FileListView({ src, fileName, size, created, focus, copy }) { 
   const cloudState = useSelector((state) => state.cloud);
 
+  // Обработчик нажатия иконки копирования ссылки
   const handleCopy = async () => {
     const downloadUrl = await getDownloadURL(cloudState.onFocus);
     navigator.clipboard.writeText(downloadUrl.url);
-  }
+  };
 
   return (
     <div
-      className={(copy ? "hover:bg-blue-100 focus:bg-blue-100 focus:hover:bg-blue-200" : "") + "file w-full h-14 p-2 flex items-center outline-none rounded-md cursor-default"}
+      className={(copy ? "hover:bg-blue-100 focus:bg-blue-100 focus:hover:bg-blue-200" : "") + " file w-full h-14 p-2 flex items-center outline-none rounded-md cursor-default"}
       tabIndex={-1}
       name={fileName}
       onFocus={(e) => focus(e)}
@@ -32,7 +34,7 @@ export default function FileListView({ src, fileName, size, created, focus, copy
       <div
         className="w-[13%] h-5 text-xs"
       >
-        {(size/1024).toFixed(1) < 1000 ? (size/1024).toFixed(1) + ' Kb' : ((size/1024)/1024).toFixed(1) + ' Mb'} 
+        {fileSize(size)} 
       </div>
       <div
         className="w-[13%] h-5 text-xs"

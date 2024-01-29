@@ -1,21 +1,21 @@
 import dateFormat from "dateformat";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { focusOnUser } from '../slices/adminSlice';
+import { focusOnAcc } from '../slices/adminSlice';
 
-// КОМПОНЕНТ ОТОБРАЖЕНИЯ ПОЛЬЗОВАТЕЛЕЙ
+// КОМПОНЕНТ ОТОБРАЖЕНИЯ АККАУНТОВ
 export default function UsersList({ user }) {
   const userState = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const size = user.fullSize.reduce((acc, val) => (acc + Number(val.size)), 0);
 
-  // Обработчик одинарного клика по пользователю(записываем фокус в состояние)
+  // Обработчик одинарного клика по акк(записываем фокус в состояние)
   const handleClick = () => {
-    return dispatch(focusOnUser(user.id));
+    return dispatch(focusOnAcc(user.id));
   };
 
-  // Обработчик двойного клика по пользователю(переход в карточку пользователя)
+  // Обработчик двойного клика по акк(переход в карточку пользователя)
   const handleDoubleClick = () => {
     if (user.id === userState.id) {
       return navigate('/person_info');
