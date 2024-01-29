@@ -1,0 +1,10 @@
+2024-01-29 23:39:23,282 django.request ERROR    Internal Server Error: /api/reg
+2024-01-29 23:39:23,282 django.request ERROR    Internal Server Error: /api/reg
+2024-01-29 23:42:39,514 django.request ERROR    Internal Server Error: /api/reg
+2024-01-29 23:42:39,514 django.request ERROR    Internal Server Error: /api/reg
+2024-01-29 23:43:57,264 django.request ERROR    Internal Server Error: /api/reg
+2024-01-29 23:43:57,264 django.request ERROR    Internal Server Error: /api/reg
+2024-01-29 23:45:00,821 django.request ERROR    Internal Server Error: /api/reg
+2024-01-29 23:45:00,821 django.request ERROR    Internal Server Error: /api/reg
+2024-01-29 23:47:17,123 django.request ERROR    Internal Server Error: /api/reg
+2024-01-29 23:47:17,123 django.request ERROR    Internal Server Error: /api/reg

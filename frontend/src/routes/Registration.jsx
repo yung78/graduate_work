@@ -66,6 +66,9 @@ export default function Registration() {
         className="w-4/5 rounded-lg flex flex-col justify-center items-center"
       >
         {Object.keys(appData.fields).map((atr, index) => {
+          if (atr === 'isAdmin') {
+            return null;
+          }
           return (
             <FieldRegistration
               key={index}

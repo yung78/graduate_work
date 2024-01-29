@@ -1,0 +1,77 @@
+2024-01-29 23:34:28,693 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-01-29 23:34:49,860 django.request WARNING  Forbidden: /api/gd
+2024-01-29 23:34:49,860 django.request WARNING  Forbidden: /api/gd
+2024-01-29 23:39:23,224 app.views INFO     Регистрация нового аккаунта.
+2024-01-29 23:39:23,282 django.request ERROR    Internal Server Error: /api/reg
+2024-01-29 23:39:23,282 django.request ERROR    Internal Server Error: /api/reg
+2024-01-29 23:41:39,092 django.utils.autoreload INFO     /home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/app/views.py changed, reloading.
+2024-01-29 23:41:39,535 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-01-29 23:42:10,677 django.utils.autoreload INFO     /home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/app/views.py changed, reloading.
+2024-01-29 23:42:11,116 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-01-29 23:42:39,452 app.views INFO     Регистрация нового аккаунта.
+2024-01-29 23:42:39,514 django.request ERROR    Internal Server Error: /api/reg
+2024-01-29 23:42:39,514 django.request ERROR    Internal Server Error: /api/reg
+2024-01-29 23:43:27,777 django.utils.autoreload INFO     /home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/app/views.py changed, reloading.
+2024-01-29 23:43:28,230 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-01-29 23:43:57,209 app.views INFO     Регистрация нового аккаунта.
+2024-01-29 23:43:57,264 django.request ERROR    Internal Server Error: /api/reg
+2024-01-29 23:43:57,264 django.request ERROR    Internal Server Error: /api/reg
+2024-01-29 23:44:31,528 django.utils.autoreload INFO     /home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/app/views.py changed, reloading.
+2024-01-29 23:44:31,981 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-01-29 23:45:00,765 app.views INFO     Регистрация нового аккаунта.
+2024-01-29 23:45:00,821 django.request ERROR    Internal Server Error: /api/reg
+2024-01-29 23:45:00,821 django.request ERROR    Internal Server Error: /api/reg
+2024-01-29 23:46:13,370 django.utils.autoreload INFO     /home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/app/views.py changed, reloading.
+2024-01-29 23:46:13,806 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-01-29 23:47:00,321 django.utils.autoreload INFO     /home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/app/views.py changed, reloading.
+2024-01-29 23:47:00,775 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-01-29 23:47:17,067 app.views INFO     Регистрация нового аккаунта.
+2024-01-29 23:47:17,123 django.request ERROR    Internal Server Error: /api/reg
+2024-01-29 23:47:17,123 django.request ERROR    Internal Server Error: /api/reg
+2024-01-29 23:49:35,866 django.utils.autoreload INFO     /home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/app/views.py changed, reloading.
+2024-01-29 23:49:36,330 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-01-29 23:50:19,822 app.views INFO     Регистрация нового аккаунта.
+2024-01-29 23:50:28,132 django.request WARNING  Forbidden: /api/gd
+2024-01-29 23:50:28,132 django.request WARNING  Forbidden: /api/gd
+2024-01-29 23:51:17,586 django.utils.autoreload INFO     /home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/app/views.py changed, reloading.
+2024-01-29 23:51:18,041 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-01-29 23:51:30,860 app.views INFO     Аутентификация.
+2024-01-29 23:51:31,307 app.views INFO     Запрос данных своего аккаунта id:2
+2024-01-29 23:51:34,377 app.views INFO     Запрос данных своего аккаунта id:2
+2024-01-29 23:51:50,255 app.views INFO     Изменение данных своего аккаунта id:2.
+2024-01-29 23:52:00,500 app.views INFO     Изменение данных своего аккаунта id:2.
+2024-01-29 23:52:10,640 app.views INFO     Изменение данных своего аккаунта id:2.
+2024-01-29 23:52:14,371 app.views INFO     Запрос данных своего аккаунта id:2
+2024-01-29 23:52:18,720 app.views INFO     Загрузка файла на сервер id:2.
+2024-01-29 23:52:22,259 app.views INFO     Загрузка файла на сервер id:2.
+2024-01-29 23:52:45,315 app.views INFO     Получение ссылки id:2.
+2024-01-29 23:52:54,910 app.views INFO     Сохранение файла по ссылке.
+2024-01-29 23:53:31,139 app.views INFO     Запрос данных своего аккаунта id:2
+2024-01-29 23:53:40,085 app.views INFO     Запрос данных своего аккаунта id:2
+2024-01-29 23:53:41,900 app.views INFO     Запрос данных своего аккаунта id:2
+2024-01-29 23:53:42,163 app.views INFO     Запрос данных своего аккаунта id:2
+2024-01-29 23:53:48,846 app.views INFO     Получение ссылки id:2.
+2024-01-29 23:54:10,383 app.views INFO     Обратная аутентификация.
+2024-01-29 23:54:10,519 django.request WARNING  Forbidden: /api/gd
+2024-01-29 23:54:10,519 django.request WARNING  Forbidden: /api/gd
+2024-01-29 23:54:52,389 app.views INFO     Аутентификация.
+2024-01-29 23:54:52,787 app.views INFO     Запрос данных своего аккаунта id:1
+2024-01-29 23:54:52,923 app.views INFO     Админ. Получение общих данных.
+2024-01-29 23:55:24,114 app.views INFO     Админ. Изменение данных аккаунта.
+2024-01-29 23:55:24,250 app.views INFO     Админ. Получение общих данных.
+2024-01-29 23:55:54,428 app.views INFO     Регистрация нового аккаунта.
+2024-01-29 23:55:54,586 app.views INFO     Админ. Получение общих данных.
+2024-01-29 23:56:00,845 app.views INFO     Админ. Изменение данных аккаунта.
+2024-01-29 23:56:00,982 app.views INFO     Админ. Получение общих данных.
+2024-01-29 23:56:07,542 app.views INFO     Запрос данных своего аккаунта id:1
+2024-01-29 23:56:15,776 app.views INFO     Изменение данных своего аккаунта id:1.
+2024-01-29 23:56:17,530 app.views INFO     Запрос данных своего аккаунта id:1
+2024-01-29 23:56:17,651 app.views INFO     Админ. Получение общих данных.
+2024-01-29 23:56:21,166 app.views INFO     Запрос данных своего аккаунта id:1
+2024-01-29 23:56:21,419 app.views INFO     Запрос данных своего аккаунта id:1
+2024-01-29 23:56:21,540 app.views INFO     Админ. Получение общих данных.
+2024-01-29 23:56:42,080 app.views INFO     Запрос данных своего аккаунта id:1
+2024-01-29 23:56:42,202 app.views INFO     Админ. Получение общих данных.
+2024-01-29 23:56:45,428 app.views INFO     Запрос данных своего аккаунта id:1
+2024-01-29 23:56:45,679 app.views INFO     Запрос данных своего аккаунта id:1
+2024-01-29 23:56:45,802 app.views INFO     Админ. Получение общих данных.
