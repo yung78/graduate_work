@@ -60,7 +60,7 @@ export default function AdminInterface() {
             <span
               className="text-xs"
             >
-              Вы не выбрали пользователя!
+              Вы не выбрали аккаунт!
             </span>
           </div>
         ) : (

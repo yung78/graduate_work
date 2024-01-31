@@ -18,7 +18,7 @@ export default function FieldAddChangeUser({ atr, text, data, }) {
         <input
           type={atr === 'isAdmin' ? 'checkbox' : 'text'}
           name={atr}
-          className={`${atr === 'isAdmin' ? 'h-4 w-4' : 'h-9 w-full'} " px-2 border-2 border-gray-300 bg-blue-100 rounded-md outline-gray-400"`}
+          className={`${atr === 'isAdmin' ? 'h-4 w-4' : 'h-9 w-full'} " px-2 border-2 border-gray-300 bg-blue-100 rounded-md outline-none focus:border-gray-400 "`}
           defaultValue={data ? data[atr] : ''}
           defaultChecked={data ? data[atr] : ''}
         />

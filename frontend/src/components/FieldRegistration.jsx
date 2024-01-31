@@ -9,11 +9,10 @@ import {
 export default function FieldRegistration({atribute, text, actionData}) {
   const appState = useSelector((state) => state.app);
   const dispatch = useDispatch();
-  const isPasswordField = atribute.includes('password');
 
   //Подсветка валидации поля первичного ввода пароля
   const handlePassword = (e) => {
-    if (e.target.value.trim().length >= 5) {
+    if (e.target.value.trim().length >= 6) {
       e.target.style.outlineColor="#4ade80";
       dispatch(correctPassword(e.target.value));
     } else {
@@ -55,12 +54,12 @@ export default function FieldRegistration({atribute, text, actionData}) {
       >
         <input
           id={`registration_${atribute}`}
-          type={!isPasswordField ? "text" : appState.showRegistrationPassword ? "text" : "password"}
+          type={!atribute.includes('password') ? "text" : appState.showRegistrationPassword ? "text" : "password"}
           name={atribute}
           className="w-full h-9 px-2 border-2 border-gray-300 bg-blue-100 rounded-md outline-gray-400"
-          onChange={isPasswordField ? ((e) => handlers[atribute](e)) : (null)}
+          onChange={atribute.includes('password') ? ((e) => handlers[atribute](e)) : (null)}
         />
-        {isPasswordField ? (
+        {atribute.includes('password') ? (
           <div
             className="w-7 h-7 absolute top-1 right-2 cursor-pointer"
             onClick={handleShowPassword}

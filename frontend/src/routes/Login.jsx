@@ -23,9 +23,11 @@ export async function action({ request }) {
 
   // Простая валидация полей логина и пароля
   if (typeof data.email !== 'string' || data.email.trim() === '' || !data.email.includes('@')) {
-    errors.email = 'НЕКОРРЕКТНАЯ ПОЧТА';
-  } else if (typeof data.password !== 'string' || data.password.trim().length < 5) {
-    errors.password = 'НЕКОРРЕКТНЫЙ ПАРОЛЬ';
+    errors.email = true;
+  } 
+  
+  if (typeof data.password !== 'string' || data.password.trim().length < 6) {
+    errors.password = true;
   }
 
   // Если поля прошли валидацию отправляем запрос на сервер
@@ -102,7 +104,7 @@ export default function Login() {
             <p
               className="text-xs text-red-700 font-bold text-center"
             >
-              {errors.login}
+              НЕКОРРЕКТНАЯ ПОЧТА
             </p>
           ):(
             null
@@ -141,7 +143,7 @@ export default function Login() {
             <p
               className="text-xs text-red-700 font-bold text-center"
             >
-              {errors.password}
+              НЕКОРРЕКТНЫЙ ПАРОЛЬ
             </p>
           ):(
             null
