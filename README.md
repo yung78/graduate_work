@@ -9,6 +9,12 @@
 - фронтенд на JavaScript и React
 - развёртывание сервера на платформе reg.ru
 
+## Описание:
+
+1) [ Frontend](https://github.com/yung78/graduate_work/tree/main/frontend)
+2) [ Backend](https://github.com/yung78/graduate_work/tree/main/backend)  
+
+
 Доработать:
 - развернуть на хосте
 - front Инструкция: описание взаимодействия с интерфейсом
