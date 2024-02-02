@@ -1,34 +1,45 @@
 import { redirect, useLoaderData, useNavigate } from 'react-router-dom';
-import { changeAvatar, getUser } from '../app/adminApiRequests';
+import { changeAvatar, deleteFileAdmin, getDownloadURLAdmin, getUser } from '../app/adminApiRequests';
 import ButtonBack from '../components/ButtonBack';
 import dateFormat from "dateformat";
 import FileListView from '../components/FileListView';
 import ButtonChange from '../components/ButtonChange';
 import { useDispatch, useSelector } from 'react-redux';
-import { addDataToCard, cangeDataCard, showChangeModal } from '../slices/adminSlice';
+import { addDataToCard, cangeDataCard, deleteFileFromDataCard, showChangeModal } from '../slices/adminSlice';
 import ModalAddChangeUser from '../components/ModalAddChangeUser';
 import { useEffect, useRef, useState } from 'react';
 import { showMsg, fileSize, handleName } from '../app/helpers';
+import { deleteFocusOnFile, focusOnFile, hideDeleteConfirm } from '../slices/cloudSlice';
+import FooterCardFiles from '../components/FooterCardFiles';
+import ModalConfermDelete from '../components/ModalConfermDelete';
+import { useLogin, useOutsideFileClick } from '../app/customHooks';
+import { getPerson } from '../app/apiRequests';
+import ModalShareURL from '../components/ModalShareURL';
 
 
 // Загрузка данных персоны(пользователя/администратора)
 export async function loader({params}) {
+  const person = await getPerson();
   const data = await getUser(params.params);
-  if (data.error) {
+  if (data.error || person.error) {
     return redirect('/');
   }
-  return { data };
+  return { person, data };
 }
 
 // КОМПОНЕНТ(роут) КАРТОЧКИ АККАУНТА
 export default function AccountCard() {
-  const navigate = useNavigate()
-  const { data } = useLoaderData();
+  const navigate = useNavigate();
+  const { person, data } = useLoaderData();
   const adminState = useSelector((state) => state.admin);
-  const [message, setMessage] = useState(false)
+  const cloudState = useSelector((state) => state.cloud);
+  const [message, setMessage] = useState(false);
   const inputRef = useRef(null);
   const dispatch = useDispatch();
   const size = data.files.reduce((acc, val) => (acc + Number(val.size)), 0);
+
+  useLogin({ person });
+  useOutsideFileClick();
 
   useEffect(() => {
     dispatch(addDataToCard(data));
@@ -36,7 +47,12 @@ export default function AccountCard() {
 
   const handleChangeAvatar = () => {
     inputRef.current.click();
-  }
+  };
+
+  // Обработчик фокусировки на файле
+  const handleFocusOnfile = (e) => {
+    dispatch(focusOnFile(e.target.getAttribute('id')));
+  };
 
   const handleAvatarChange = async (e) => {
     if (e.target.files) {
@@ -58,13 +74,33 @@ export default function AccountCard() {
       showMsg({success: 'УСПЕШНО!'}, 3000, setMessage);
       return dispatch(cangeDataCard(response));
     }
-  }
+  };
 
   return (
     <section
       className="w-full p-6"
     >
       {adminState.changeModal ? <ModalAddChangeUser data={adminState.card} /> : <></>}
+      {cloudState.share ? (
+        <ModalShareURL
+          fetch={getDownloadURLAdmin}
+          files={adminState.card.files}
+        />
+      ) : (
+        <></>
+      )}
+      {cloudState.confirm ? (
+        <ModalConfermDelete
+          state={cloudState}
+          request={deleteFileAdmin}
+          hide={hideDeleteConfirm}
+          delFocus={deleteFocusOnFile}
+          delElement={deleteFileFromDataCard}
+          fileName={adminState.card.files?.filter((f) => f.id === Number(cloudState.onFocus))[0]['name']}
+        />
+      ) : (
+        <></>
+      )}
       <h1
         className="mb-4 text-lg text-center font-bold"
       >
@@ -111,36 +147,51 @@ export default function AccountCard() {
           <ButtonChange handler={() => dispatch(showChangeModal())} />
         </div>
       </div>
-      <p
-        className={`${message.error ? 'text-red-700' : 'text-black' } h-4 mb-5 mt-5 text-center text-sm font-bold`}
+      <div
+        className='w-full h-4 mb-3 text-center text-sm font-bold'
       >
-        {message.error ? message.error : message.success ? message.success : ''}
-      </p>
+        <p
+          className={`${message.error ? 'text-red-700' : 'text-black' }`}
+        >
+          {message.error ? message.error : message.success ? message.success : ''}
+        </p>
+        <p
+          className='text-red-700'
+        >
+          {cloudState.message ? 'Вы не выбрали файл!' : ''}
+        </p>
+      </div>
       <h2
         className="text-center"
       >
         Список файлов:
       </h2>
       <div
-        className="w-full min-h-[34vh] p-5 mb-10 flex flex-col rounded-md bg-blue-200"
+        className="w-full h-[35vh] p-5 rounded-md bg-stone-100 overflow-auto border-2 border-stone-200" 
       >
-        {adminState.card.files?.map((f, index) => {
-          return (
-            <div
-              className="bg-slate-50 my-1 rounded-md"
-              key={index}
-            >
+        {adminState.card.files?.length ? (
+          adminState.card.files.map((file) => {
+            return (
               <FileListView
-                src={handleName(f.name)}
-                fileName={f.name}
-                name={f.name}
-                size={f.size}
-                focus={(e) => null}
+                key={file.id}
+                id={file.id}
+                src={handleName(file.name)}
+                fileName={file.name}
+                size={file.size}
+                focus={handleFocusOnfile}
+                fetch={getDownloadURLAdmin}
               />
-            </div>
-          )
-        }) }
+            )
+          })
+        ):(
+          <p
+            className="text-center"
+          >
+            Пользователь еще ничего не загрузил...
+          </p>
+        )}
       </div>
+      <FooterCardFiles />
       <ButtonBack />
     </section>
   );

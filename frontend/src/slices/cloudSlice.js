@@ -7,7 +7,7 @@ const initialState = {
   confirm: false,
   share: false,
   message: false,
-  dounloadURL: false
+  dounloadURL: false,
 };
 
 export const cloudSlice = createSlice({
@@ -21,7 +21,7 @@ export const cloudSlice = createSlice({
       return { ...state, files: action.payload };
     },
     deleteFileFromFiles: (state, action) => {
-      return { ...state, files: state.files.filter((el) => el.name !== action.payload) };
+      return { ...state, files: state.files.filter((el) => el.id !== Number(action.payload)) };
     },
     focusOnFile: (state, action) => {
       return { ...state, onFocus: action.payload }; 

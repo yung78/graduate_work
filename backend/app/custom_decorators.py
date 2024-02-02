@@ -49,6 +49,8 @@ def admin_auth(f):
                 return Response({'error': 'not authorized'}, status=403)
             else:
                 return Response({'error': data}, status=500)
+        except ObjectDoesNotExist:
+            return Response({'error': 'not found'}, status=400)
         except (Exception, ) as err:
             return Response({'error': f'{err}'}, status=500)
     return wrapped

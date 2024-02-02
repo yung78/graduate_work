@@ -71,6 +71,7 @@ def get_data(request, data):
     data['user'].save(update_fields=['last_visit'])
 
     files = [{
+        'id': x.id,
         'name': x.name,
         'size': x.size,
         'created': x.created,
@@ -180,6 +181,7 @@ class File(APIView):
             if serializer.is_valid():
                 serializer.save()
                 files = [{
+                    'id': x.id,
                     'name': x.name,
                     'size': x.size,
                     'created': x.created,
@@ -191,31 +193,31 @@ class File(APIView):
         return download(request)
 
     # Удаление файла с сервера (django-cleanup удаляет файл из директории user_(id))
-    def delete(self, request, name):
+    def delete(self, request, fid):
         @user_auth
         def remove(req, data):
             logger.info(f'Удаление файла id:{data["user"].id}')
-            data['files'].get(name=urllib.parse.unquote(name)).delete()
+            data['files'].get(id=fid).delete()
             return Response(status=204)
         return remove(request)
 
     # Отправка файла для сохранения на клиенте
-    def get(self, request, name):
+    def get(self, request, fid):
         @user_auth
         def upload(req, data):
             logger.info(f'Сохранение файла на клиенте id:{data["user"].id}')
-            file = data['files'].get(name=urllib.parse.unquote(name))
+            file = data['files'].get(id=fid)
             return FileResponse(file.file, as_attachment=True)
         return upload(request)
 
 
 # Формирование и отправка ссылки для скачивания(сохранения) файла сторонним пользователем
 @api_view(['GET'])
-def get_url(request, name):
+def get_url(request, fid):
     @user_auth
     def _get_url(req, data):
         logger.info(f'Получение ссылки id:{data["user"].id}.')
-        url = f"{data['user'].id}/{data['files'].get(name=urllib.parse.unquote(name)).name}"
+        url = f"{data['user'].id}/{data['files'].get(id=fid).name}"
         key = os.getenv('URL_KEY')
         encrypt_url = encrypt(url, key)
         return Response({'url': f'http://localhost:3000/download/{encrypt_url}'}, status=200)
@@ -246,7 +248,7 @@ def get_file(request, code):
         return Response(status=500)
 
 
-# АДМИН
+# АДМИНИСТРАТОР
 # Получение данных всех аккаунтов
 @api_view(['GET'])
 @admin_auth
@@ -332,6 +334,7 @@ def change_one(request):
     return _change_one(request)
 
 
+# Удаление аккаунта
 @api_view(['DELETE'])
 def delete_one(request, uid):
     @admin_auth
@@ -340,3 +343,68 @@ def delete_one(request, uid):
         CloudUser.objects.get(id=uid).delete()
         return Response(status=204)
     return _delete_one(request)
+
+
+# Работа с файлами
+class AdminFile(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+    serializer_class = FileUploadSerializer
+
+    # Загрузка файла на сервер
+    def post(self, request, fid):
+        @admin_auth
+        def download(req):
+            print(req.data)
+            logger.info(f'Админ. Загрузка файла на сервер в хранилище пользователя id:{fid}.')
+            serializer = self.serializer_class(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                files = [{
+                    'id': x.id,
+                    'name': x.name,
+                    'size': x.size,
+                    'created': x.created,
+                } for x in UserFiles.objects.filter(user=fid)]
+
+                return Response(data={'files': files}, status=201)
+            else:
+                return Response(data={'error': 'bad file'}, status=400)
+        return download(request)
+
+    # Удаление файла с сервера (django-cleanup удаляет файл из директории user_(id))
+    def delete(self, request, fid):
+        @admin_auth
+        def remove(req):
+            uid = UserFiles.objects.get(id=fid).user.id
+            logger.info(f'Удаление файла администратором из хранилища пользователя id:{uid}')
+            UserFiles.objects.get(id=fid).delete()
+            return Response(status=204)
+        return remove(request)
+
+    # Отправка файла для сохранения на клиенте
+    def get(self, request, fid):
+        @admin_auth
+        def upload(req):
+            uid = UserFiles.objects.get(id=fid).user.id
+            logger.info(f'Сохранение администратором файла хранилища пользователя id:{uid} на клиенте')
+            file = UserFiles.objects.get(id=fid)
+            return FileResponse(file.file, as_attachment=True)
+        return upload(request)
+
+
+# Формирование и отправка ссылки для скачивания(сохранения) файла сторонним пользователем
+@api_view(['GET'])
+def get_url_admin(request, fid):
+    @admin_auth
+    def _get_url_admin(req):
+        uid = UserFiles.objects.get(id=fid).user.id
+        logger.info(f'Админ. Получение ссылки на файл из хранилища пользователя id:{uid}.')
+        file = UserFiles.objects.get(id=fid)
+        url = f"{file.user.id}/{file.name}"
+        key = os.getenv('URL_KEY')
+        encrypt_url = encrypt(url, key)
+
+        return Response({'url': f'http://localhost:3000/download/{encrypt_url}'}, status=200)
+    return _get_url_admin(request)
+
+

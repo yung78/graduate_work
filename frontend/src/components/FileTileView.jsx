@@ -1,10 +1,10 @@
 //КОМПОНЕНТ ОТОБРАЖЕНИЯ ФАЙЛОВ ПОЛЬЗОВАТЕЛЯ ПЛИТКОЙ
-export default function FileTileView({ src, fileName, focus }) {
+export default function FileTileView({ id, src, fileName, focus }) {
 
   return (
     <div
+      id={id}
       className="file w-28 h-32 p-2 flex flex-col items-center hover:bg-blue-100 focus:bg-blue-100 focus:hover:bg-blue-200 outline-none rounded-md cursor-default"
-      name={fileName}
       tabIndex={-1}
       onFocus={(e) => focus(e)}
     >

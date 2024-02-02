@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login, logout } from '../slices/appSlice';
 import { loadPersonData, resetPersonData } from '../slices/userSlice';
 import { addUserFiles, deleteFocusOnFile, hideDeleteConfirm, hideShareURL, resetCloud, saveDownloadURL } from '../slices/cloudSlice';
-import { getDownloadURL } from './apiRequests';
-import { deleteFocusOnAcc, hideAddModal, hideDelete, loadData, resetAdmin} from '../slices/adminSlice';
+import { deleteFocusOnAcc, hideAddModal, hideChangeModal, hideDelete, loadData, resetAdmin} from '../slices/adminSlice';
 import { useNavigate } from 'react-router-dom';
 
 //Хук загрузки данных в состояния при прохождении аутентификации(вход)
@@ -39,13 +38,13 @@ export function useOutsideFileClick() {
       if ((e.target.closest('.btn')) || (e.target.closest('.file')) || (e.target.closest('.modal')) || (e.target.closest('.user'))) {
         return;
       }
-
       dispatch(deleteFocusOnAcc());
       dispatch(deleteFocusOnFile());
       dispatch(hideShareURL());
       dispatch(hideDeleteConfirm());
       dispatch(hideDelete());
-      dispatch(hideAddModal())
+      dispatch(hideAddModal());
+      dispatch(hideChangeModal());
       return;
     }
 
@@ -57,18 +56,18 @@ export function useOutsideFileClick() {
 }
 
 // Хук получения ссылки на загрузку файла сторонним пользователем
-export function useGetURL() {
+export function useGetURL(fetch) {
   const dispatch = useDispatch();
   const cloudState = useSelector((state) => state.cloud);
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     (async () => {
-      const response = await getDownloadURL(cloudState.onFocus);
+      const response = await fetch(cloudState.onFocus);
       if (response.error) {
-        return navigate('/')
+        return navigate('/');
       }
       dispatch(saveDownloadURL(response.url));
     })();
-  }, [cloudState.onFocus, dispatch, navigate]);
+  }, [cloudState.onFocus, dispatch, navigate, fetch]);
 }

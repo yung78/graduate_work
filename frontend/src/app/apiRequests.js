@@ -1,7 +1,7 @@
 import localforage from 'localforage';
 import baseFetch from './baseFetch';
 
-//ФУНКЦИИ ОТПРАВКИ ОБЩИХ ЗАПРОСОВ НА СЕРВЕР:
+// ФУНКЦИИ ОТПРАВКИ ОБЩИХ ЗАПРОСОВ НА СЕРВЕР:
 
 //Функция регистрации
 export async function registration(data) {
@@ -51,7 +51,7 @@ export async function logout() {
   });
 }
 
-//Функция загрузки аватара
+// Функция загрузки аватара
 export async function loadAvatar(formData) {
   return baseFetch({
     url: process.env.REACT_APP_CHANGE_PERSON_URL,
@@ -61,7 +61,7 @@ export async function loadAvatar(formData) {
   });
 }
 
-//Функция внесения изменений в свои личные данные
+// Функция внесения изменений в свои личные данные
 export async function changePersonData(data) {
   return baseFetch({
     url: process.env.REACT_APP_CHANGE_PERSON_URL,
@@ -74,7 +74,7 @@ export async function changePersonData(data) {
   });
 }
 
-//Функция отправки файлов на сервер
+// Функция отправки файлов на сервер
 export async function sendFiles(formData) {
   return baseFetch({
     url: process.env.REACT_APP_UPLOAD_URL,
@@ -84,36 +84,36 @@ export async function sendFiles(formData) {
   });
 }
 
-//Функция удаления файла из хранилища
-export async function deleteFile(fileName) {
+// Функция удаления файла из хранилища
+export async function deleteFile(id) {
   return baseFetch({
-    url: process.env.REACT_APP_DELETE_URL + fileName,
+    url: process.env.REACT_APP_DELETE_URL + id,
     method: 'DELETE',
     headers: { 'Authorization': await localforage.getItem('sessionToken'), },
     del: true,
   });
 }
 
-//Функция сохранения(скачки) файла на клиенте
-export async function getFile(fileName) {
+// Функция сохранения(скачки) файла на клиенте
+export async function getFile(id, fileName) {
   return baseFetch({
-    url: process.env.REACT_APP_DOWNLOAD_URL + fileName,
+    url: process.env.REACT_APP_DOWNLOAD_URL + id,
     method: 'GET',
     headers: { 'Authorization': await localforage.getItem('sessionToken'), },
     file: fileName,
   });
 }
 
-//Функция для получения ссылки сохранения(скачки) файла сторонним пользователем
-export async function getDownloadURL(fileName) {
+// Функция для получения ссылки сохранения(скачки) файла сторонним пользователем
+export async function getDownloadURL(id) {
   return baseFetch({
-    url: process.env.REACT_APP_GET_FILE_URL + fileName,
+    url: process.env.REACT_APP_GET_FILE_URL + id,
     method: 'GET',
     headers: { 'Authorization': await localforage.getItem('sessionToken'), },
   });
 }
 
-//Функция для сохранения(скачки) файла сторонним пользователем
+// Функция для сохранения(скачки) файла сторонним пользователем
 export async function getFileByLink(params) {
   return baseFetch({
     url: process.env.REACT_APP_GET_FILE_BY_LINK + params,

@@ -72,3 +72,42 @@ export async function deleteAccount(id) {
     del: true,
   });
 }
+
+// Функция отправки файла на сервер
+export async function sendFilesAdmin(formData, id) {
+  return baseFetch({
+    url: process.env.REACT_APP_ADMIN_FILES + id,
+    method: 'POST',
+    headers: { 'Authorization': await localforage.getItem('sessionToken'), },
+    body: formData,
+  });
+}
+
+// Функция сохранения(скачки) файла на клиенте
+export async function getFileAdmin(id, fileName) {
+  return baseFetch({
+    url: process.env.REACT_APP_ADMIN_FILES + id,
+    method: 'GET',
+    headers: { 'Authorization': await localforage.getItem('sessionToken'), },
+    file: fileName,
+  });
+}
+
+// Функция удаления файла из хранилища
+export async function deleteFileAdmin(id) {
+  return baseFetch({
+    url: process.env.REACT_APP_ADMIN_FILES + id,
+    method: 'DELETE',
+    headers: { 'Authorization': await localforage.getItem('sessionToken'), },
+    del: true,
+  });
+}
+
+// Функция для получения ссылки сохранения(скачки) файла сторонним пользователем
+export async function getDownloadURLAdmin(id) {
+  return baseFetch({
+    url: process.env.REACT_APP_ADMIN_FILES_URL + id,
+    method: 'GET',
+    headers: { 'Authorization': await localforage.getItem('sessionToken'), },
+  });
+}

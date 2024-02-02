@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeField } from '../slices/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { changePersonData } from '../app/apiRequests';
-import { showMsg } from '../app/helpers';
+import { passwordValidation, showMsg } from '../app/helpers';
 
 //КОМПОНЕНТ ИЗМЕНЯЕМЫХ ПОЛЕЙ СВОИХ ЛИЧНЫХ ДАННЫХ
 export default function FieldPersonInfo({atribute, text, setMessage }) {
@@ -29,10 +29,10 @@ export default function FieldPersonInfo({atribute, text, setMessage }) {
     const data = Object.fromEntries(formData);
 
     // Простая валидация 
-    if ('newPassword' in data && data['newPassword'].trim().length < 5) {
-      showMsg({ error:'ПАРОЛЬ МИНИМУМ 6 СИМВОЛОВ!' }, 3000, setMessage);
+    if ('newPassword' in data && !passwordValidation(data.newPassword)) {
+      showMsg({ error:'НЕКОРРЕКТНЫЙ ПАРОЛЬ! минимум 6 символов: как минимум одна заглавная буква, одна цифра и один специальный символ.' }, 3000, setMessage);
       return;
-    } else if ('email' in data && (!data.email.includes('@') || data.email.trim() === '')) {
+    } else if ('email' in data && !passwordValidation(data.email)) {
       showMsg({ error:'НЕКОРРЕКТНАЯ ПОЧТА!' }, 3000, setMessage);
       return;
     }

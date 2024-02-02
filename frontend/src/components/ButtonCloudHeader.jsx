@@ -14,26 +14,18 @@ export default function ButtonCloudHeader({ btnName, src }) {
 
   // Обработчики кнопок управления
   const buttonHandlers = {
-    'скачать': () => handleSaveFile(getFile),
-    'поделиться': () => { cloudState.onFocus ? (dispatch(showShareURL())) : (dispatch(showMessage())) },
-    'загрузить': () => { inputRef.current.click() },
-    'удалить': () => { cloudState.onFocus ? (dispatch(showDeleteConfirm())) : (dispatch(showMessage())) },
-  };
-
-  // Обработчик нажатия кнопок
-  const handleClick = (btnName) => {
-    buttonHandlers[btnName]();
+    'скачать': () => cloudState.onFocus ? handleSaveFile(getFile) : dispatch(showMessage()),
+    'поделиться': () => cloudState.onFocus ? dispatch(showShareURL()) : dispatch(showMessage()),
+    'загрузить': () => inputRef.current.click(),
+    'удалить': () => cloudState.onFocus ? dispatch(showDeleteConfirm()) : dispatch(showMessage()),
   };
 
   // Обработчик сохранения(скачки) файла на клиенте
   const handleSaveFile = async (f) => {
-    if (cloudState.onFocus) {
-      const response = await f(cloudState.onFocus);
-      if (response){
-        return navigate('/');
-      }
-    } else {
-      (dispatch(showMessage()));
+    const fileName = cloudState.files?.filter((f) => f.id === Number(cloudState.onFocus))[0]['name'];
+    const response = await f(cloudState.onFocus, fileName);
+    if (response) {
+      return navigate('/');
     }
     return;
   }
@@ -67,7 +59,7 @@ export default function ButtonCloudHeader({ btnName, src }) {
   return (
     <div
       className="btn w-[6vh] h-[6vh] flex relative flex-col items-center justify-center cursor-pointer group"
-      onClick={() => handleClick(btnName)}
+      onClick={buttonHandlers[btnName]}
       tabIndex={-1}
     >
       <div

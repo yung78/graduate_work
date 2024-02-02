@@ -25,7 +25,7 @@ const appData = {
     'xml',
     'zip',
   ],
-  cloudButtons: {
+  fileButtons: {
     'скачать': '/img/clouddown.png',
     'поделиться': '/img/cloudshare.png',
     'загрузить': '/img/cloudup.png',

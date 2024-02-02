@@ -1,23 +1,28 @@
 import dateFormat from 'dateformat';
-import { getDownloadURL } from '../app/apiRequests';
 import { useSelector } from 'react-redux';
 import { fileSize } from '../app/helpers';
+import { useNavigate } from 'react-router-dom';
 
 // КОМПОНЕНТ ОТОБРАЖЕНИЯ ФАЙЛОВ ПОЛЬЗОВАТЕЛЯ СПИСКОМ
-export default function FileListView({ src, fileName, size, created, focus, copy }) { 
+export default function FileListView({ id, src, fileName, size, created, focus, fetch}) { 
   const cloudState = useSelector((state) => state.cloud);
+  const navigate = useNavigate();
 
   // Обработчик нажатия иконки копирования ссылки
   const handleCopy = async () => {
-    const downloadUrl = await getDownloadURL(cloudState.onFocus);
-    navigator.clipboard.writeText(downloadUrl.url);
+    const response = await fetch(cloudState.onFocus);
+    if (response.error) {
+      return navigate('/');
+    }
+
+    return navigator.clipboard.writeText(response.url);
   };
 
   return (
     <div
-      className={(copy ? "hover:bg-blue-100 focus:bg-blue-100 focus:hover:bg-blue-200" : "") + " file w-full h-14 p-2 flex items-center outline-none rounded-md cursor-default"}
+      id={id}
+      className="file w-full mb-1 h-14 p-2 flex items-center outline-none rounded-md cursor-default bg-slate-50 hover:bg-blue-100 focus:bg-blue-100 focus:hover:bg-blue-200"
       tabIndex={-1}
-      name={fileName}
       onFocus={(e) => focus(e)}
     >
       <div
@@ -44,17 +49,12 @@ export default function FileListView({ src, fileName, size, created, focus, copy
       <div
         className="w-[13%] h-5 flex justify-center"
       >
-        {copy ? (
           <div
             className="w-5 h-5 hover:bg-gray-200 active:shadow-[0_0px_10px_4px_rgba(34,60,80,0.2)] cursor-pointer"
             onClick={handleCopy}
           >
             <img src="/img/copylink.png" alt="copyLink" />
           </div>
-        ) : (
-          <></>
-        )
-        }
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 //КОМПОНЕНТ ПОДТВЕРЖДЕНИЯ УДАЛЕНИЯ ФАЙЛА(модальное окно)
-export default function ModalConfermDelete({ state, request, hide, delFocus, delElement, account=false }) {
+export default function ModalConfermDelete({ state, request, hide, delFocus, delElement, fileName }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -33,9 +33,15 @@ export default function ModalConfermDelete({ state, request, hide, delFocus, del
       <div 
         className="modal w-[300px] p-4 relative rounded-md bg-white box-border z-20 flex flex-col flex-wrap items-center text-center"
       >
-        <p>
-          {account ? 'Аккфунт с id: ' : 'Файл '}<strong>"{state.onFocus}"</strong> будет удален безвозвратно. Вы уверены?
-        </p>
+        {fileName ? (
+          <p>
+            Файл <strong>"{fileName}"</strong> будет удален безвозвратно. <br /> Вы уверены?
+          </p>
+        ) : (
+          <p>
+            Аккфунт с id: <strong>{state.onFocus}</strong> будет удален безвозвратно. Вы уверены?
+          </p>
+        )}
         <div
           className='w-full mt-4 flex justify-around'
         >

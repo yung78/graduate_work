@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { redirect, useLoaderData, useNavigate } from 'react-router-dom';
 import { useLogin } from '../app/customHooks';
-import { getPerson, loadAvatar } from '../app/apiRequests';
+import { getPerson, isAdmin, loadAvatar } from '../app/apiRequests';
 import FieldPersonInfo from '../components/FieldPersonInfo';
 import { useRef, useState } from 'react';
 import { changeField } from '../slices/userSlice';
@@ -11,9 +11,13 @@ import { showMsg } from '../app/helpers';
 
 //Загрузка данных аккаунта
 export async function loader() {
+  const check = await isAdmin();
   const person = await getPerson();
   if (person.error) {
     return redirect('/');
+  }
+  if (check.admin) {
+    return redirect(`/user_card/${person.id}`);
   }
   return { person };
 }

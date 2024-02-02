@@ -2,6 +2,7 @@ import { Form, useActionData, useNavigate } from 'react-router-dom';
 import FieldRegistration from '../components/FieldRegistration';
 import { registration } from '../app/apiRequests';
 import ModalRegSuccess from '../components/ModalRegSuccess';
+import { emailValidation, passwordValidation } from '../app/helpers';
 import appData from '../app/appData';
 
 // Обработка и отправка данных формы(Form) регистрации на сервер
@@ -10,12 +11,12 @@ export async function action({request}) {
   const data = Object.fromEntries(formData);
   let actionData = { errors: {}, success: false};
 
-  // Простая валидация полей (кроме фамилии)
-  if (typeof data.email !== 'string' || data.email.trim() === '' || !data.email.includes('@')) {
+  // Простая валидация полей почты и паролей
+  if (!emailValidation(data.email)) {
     actionData.errors.email = 'НЕКОРРЕКТНАЯ ПОЧТА!';
   }
 
-  if (typeof data.password !== 'string' || data.password.trim().length < 5) {
+  if (!passwordValidation(data.password)) {
     actionData.errors.password = 'НЕКОРРЕКТНЫЙ ПАРОЛЬ!';
   }
 
@@ -117,7 +118,7 @@ export default function Registration() {
       <p
         className="mt-2 w-1/2 text-sm"
       >
-        Пароль должен содержать минимум 6 символов.
+        Пароль должен содержать минимум 6 символов: как минимум одна заглавная буква, одна цифра и один специальный символ.
       </p>
       <p
         className="mt-2 w-1/2 text-sm"

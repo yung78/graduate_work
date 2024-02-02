@@ -4,6 +4,7 @@ import {
   incorrectPassword,
   showHideRegistrationPassword
 } from '../slices/appSlice';
+import { passwordValidation } from '../app/helpers';
 
 //КОМПОНЕНТ ПОЛЕЙ ФОРМЫ РЕГИСТРАЦИИ
 export default function FieldRegistration({atribute, text, actionData}) {
@@ -12,7 +13,7 @@ export default function FieldRegistration({atribute, text, actionData}) {
 
   //Подсветка валидации поля первичного ввода пароля
   const handlePassword = (e) => {
-    if (e.target.value.trim().length >= 6) {
+    if (passwordValidation(e.target.value)) {
       e.target.style.outlineColor="#4ade80";
       dispatch(correctPassword(e.target.value));
     } else {

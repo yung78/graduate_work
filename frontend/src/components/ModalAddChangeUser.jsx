@@ -5,7 +5,7 @@ import FieldAddChangeUser from './FieldAddChangeUser';
 import { useState } from 'react';
 import { addAccount, changeAccount, getUsersData } from '../app/adminApiRequests';
 import { useNavigate } from 'react-router-dom';
-import { showMsg } from '../app/helpers';
+import { emailValidation, passwordValidation, showMsg } from '../app/helpers';
 
 // КОМПОНЕНТ МОДАЛЬНОГО ОКНА СОЗДАНИЯ НОВОГО АКК ИЛИ ВНЕСЕНИЯ ИЗМЕНЕНИЙ
 export default function ModalAddChangeUser({ data }) {
@@ -35,10 +35,10 @@ export default function ModalAddChangeUser({ data }) {
       data['isAdmin'] = false;
     }
 
-    // // Простая валидация адреса почты
-    if (!data.email.includes('@') || data.email.trim() === '') {
+    // // Валидация почты и пароля
+    if (!emailValidation(data.email)) {
       return showMsg({error: 'Ты точно админ?'}, 3000, setMessage);
-    } else if ('password' in data && data.password.trim().length < 5) {
+    } else if (!passwordValidation(data.password)) {
       return showMsg({error: 'Начинаю сомневаться в твоей профпригодности...'}, 3000, setMessage);
     }
 

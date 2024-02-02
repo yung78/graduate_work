@@ -1,5 +1,5 @@
 import { redirect, useLoaderData } from 'react-router-dom';
-import { isAdmin, getPerson, deleteFile } from '../app/apiRequests';
+import { isAdmin, getPerson, deleteFile, getDownloadURL } from '../app/apiRequests';
 import { useLogin, useOutsideFileClick } from '../app/customHooks';
 import FileListView from '../components/FileListView';
 import FileTileView from '../components/FileTileView';
@@ -31,9 +31,9 @@ export default function UserInterface() {
   useLogin({person});
   useOutsideFileClick();
 
-  // Обработчик фокусировки
-  const handleFocus = (e) => {
-    dispatch(focusOnFile(e.target.getAttribute('name')));
+  // Обработчик фокусировки на файле
+  const handleFocusOnFile = (e) => {
+    dispatch(focusOnFile(e.target.getAttribute('id')));
   }
 
   return (
@@ -48,7 +48,11 @@ export default function UserInterface() {
           className="w-full p-5 rounded-b-xl"
         >
           <>
-            {cloudState.share ? (<ModalShareURL />) : (null)}
+            {cloudState.share ? (
+              <ModalShareURL
+                fetch={getDownloadURL}
+                files={cloudState.files}
+              />) : (null)}
             {cloudState.confirm ? (
               <ModalConfermDelete
                 state={cloudState}
@@ -57,7 +61,9 @@ export default function UserInterface() {
                 delFocus={deleteFocusOnFile}
                 delElement={deleteFileFromFiles}
               />
-            ) : (<></>)}
+            ) : (
+              <></>
+            )}
           </>
           {cloudState.message ? (
             <div
@@ -85,29 +91,31 @@ export default function UserInterface() {
             ) : (
               cloudState.view ? (
                 <>
-                  {cloudState.files.map((file, index) => {
+                  {cloudState.files.map((file) => {
                     return (
                       <FileListView
-                        key={index}
+                        key={file.id}
+                        id={file.id}
                         src={handleName(file.name)}
                         fileName={file.name}
                         size={file.size}
                         created={file.created}
-                        focus={handleFocus}
-                        copy={true}
+                        focus={handleFocusOnFile}
+                        fetch={getDownloadURL}
                       />
                     );
                   })}
                 </>
               ) : (
                 <>
-                  {cloudState.files.map((file, index) => {
+                  {cloudState.files.map((file) => {
                     return (
                       <FileTileView
-                        key={index}
+                        key={file.id}
+                        id={file.id}
                         src={handleName(file.name)}
                         fileName={file.name}
-                        focus={handleFocus}
+                        focus={handleFocusOnFile}
                       />
                     );
                   })}

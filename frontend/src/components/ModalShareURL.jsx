@@ -4,10 +4,14 @@ import { useGetURL } from '../app/customHooks';
 
 
 // КОМПОНЕНТ ОТОБРАЖЕНИЯ ССЫЛКИ ДЛЯ СКАЧИВАНИЯ(модальное окно)
-export default function ModalShareURL() {
+export default function ModalShareURL({ fetch, files }) {
   const cloudState = useSelector((state) => state.cloud);
   const dispatch = useDispatch();
-  useGetURL();
+  const fileName = files.filter((f) => Number(f.id) === Number(cloudState.onFocus))[0]['name'];
+
+
+
+  useGetURL(fetch);
 
   // Обработчик нажатия кнопки "Закрыть"
   const handleCancel = () => {
@@ -30,7 +34,7 @@ export default function ModalShareURL() {
         <p>
           Ссылка на файл
         </p>
-        <strong>"{cloudState.onFocus}"</strong>
+        <strong>"{fileName}"</strong>
         <div
           className="w-full mt-2 p-1 bg-gray-100 rounded-md"
         >

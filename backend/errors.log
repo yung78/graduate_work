@@ -8,3 +8,67 @@
 2024-01-29 23:45:00,821 django.request ERROR    Internal Server Error: /api/reg
 2024-01-29 23:47:17,123 django.request ERROR    Internal Server Error: /api/reg
 2024-01-29 23:47:17,123 django.request ERROR    Internal Server Error: /api/reg
+2024-02-01 17:54:07,000 django.request ERROR    Internal Server Error: /a/api/g/3
+2024-02-01 17:54:07,000 django.request ERROR    Internal Server Error: /a/api/g/3
+2024-02-01 17:55:57,382 django.request ERROR    Internal Server Error: /a/api/g/3
+2024-02-01 17:55:57,382 django.request ERROR    Internal Server Error: /a/api/g/3
+2024-02-01 17:57:52,068 django.request ERROR    Internal Server Error: /a/api/g/3
+2024-02-01 17:57:52,068 django.request ERROR    Internal Server Error: /a/api/g/3
+2024-02-01 17:58:11,872 django.request ERROR    Internal Server Error: /a/api/g/3
+2024-02-01 17:58:11,872 django.request ERROR    Internal Server Error: /a/api/g/3
+2024-02-01 18:02:23,522 django.request ERROR    Internal Server Error: /api/f/netology.png
+2024-02-01 18:02:23,522 django.request ERROR    Internal Server Error: /api/f/netology.png
+2024-02-02 16:21:27,430 django.request ERROR    Internal Server Error: /a/api/f/4
+Traceback (most recent call last):
+  File "/home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/.venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/.venv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/.venv/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "/home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/.venv/lib/python3.10/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/.venv/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/.venv/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/.venv/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/.venv/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+TypeError: AdminFile.post() got an unexpected keyword argument 'fid'
+2024-02-02 16:21:27,430 django.request ERROR    Internal Server Error: /a/api/f/4
+Traceback (most recent call last):
+  File "/home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/.venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/.venv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/.venv/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "/home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/.venv/lib/python3.10/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/.venv/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/.venv/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/.venv/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/.venv/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+TypeError: AdminFile.post() got an unexpected keyword argument 'fid'
+2024-02-02 18:45:00,952 django.request ERROR    Internal Server Error: /api/gu/3
+2024-02-02 18:45:00,952 django.request ERROR    Internal Server Error: /api/gu/3
+2024-02-02 22:48:03,937 django.request ERROR    Internal Server Error: /a/api/gu/20
+2024-02-02 22:48:03,937 django.request ERROR    Internal Server Error: /a/api/gu/20
+2024-02-02 22:49:06,622 django.request ERROR    Internal Server Error: /a/api/gu/2
+2024-02-02 22:49:06,622 django.request ERROR    Internal Server Error: /a/api/gu/2
+2024-02-02 22:49:47,506 django.request ERROR    Internal Server Error: /a/api/gu/20
+2024-02-02 22:49:47,506 django.request ERROR    Internal Server Error: /a/api/gu/20
+2024-02-02 22:51:35,198 django.request ERROR    Internal Server Error: /a/api/gu/20
+2024-02-02 22:51:35,198 django.request ERROR    Internal Server Error: /a/api/gu/20
+2024-02-02 22:52:11,224 django.request ERROR    Internal Server Error: /a/api/gu/20
+2024-02-02 22:52:11,224 django.request ERROR    Internal Server Error: /a/api/gu/20
+2024-02-02 22:53:00,294 django.request ERROR    Internal Server Error: /a/api/gu/20
+2024-02-02 22:53:00,294 django.request ERROR    Internal Server Error: /a/api/gu/20
+2024-02-02 22:53:12,972 django.request ERROR    Internal Server Error: /a/api/gu/20
+2024-02-02 22:53:12,972 django.request ERROR    Internal Server Error: /a/api/gu/20

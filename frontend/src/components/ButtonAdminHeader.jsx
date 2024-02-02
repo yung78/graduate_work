@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { showMessage } from '../slices/cloudSlice';
 import { showAddModal, showChangeModal, showDelete } from '../slices/adminSlice';
 
+
 // КОМПОНЕНТ КНОПОК УПРАВЛЕНИЯ АККАУНТАМИ
 export default function ButtonAdminHeader({ btnName }) {
   const adminState = useSelector((state) => state.admin);
@@ -9,9 +10,9 @@ export default function ButtonAdminHeader({ btnName }) {
   
   // Обработчики кнопок управления
   const buttonHandlers = {
-    'добавить': () => { dispatch(showAddModal()) },
-    'удалить': () => { adminState.onFocus ? dispatch(showDelete()) : dispatch(showMessage()) },
-    'изменить': () => { adminState.onFocus ? dispatch(showChangeModal()): dispatch(showMessage()) },
+    'добавить': () => dispatch(showAddModal()),
+    'удалить': () => adminState.onFocus ? dispatch(showDelete()) : dispatch(showMessage()),
+    'изменить': () => adminState.onFocus ? dispatch(showChangeModal()): dispatch(showMessage()),
   };
 
   // Обработчик нажатия кнопок

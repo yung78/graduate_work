@@ -15,8 +15,8 @@ urlpatterns = [
     path('api/ch', change_self_data),
     path('api/gd', get_data),
     path('api/f', File.as_view()),
-    path('api/f/<str:name>', File.as_view()),
-    path('api/gu/<str:name>', get_url),
+    path('api/f/<int:fid>', File.as_view()),
+    path('api/gu/<int:fid>', get_url),
     path('api/gf/<str:code>', get_file),
     path('a/api/', include(admin_patterns)),
 ]

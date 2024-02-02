@@ -21,11 +21,11 @@ export default function HeaderCloud() {
       <div
         className="w-1/2 h-[6vh] ml-4 flex justify-around"
       >
-        {Object.keys(appData.cloudButtons).map((btnName, index) => (
+        {Object.keys(appData.fileButtons).map((btnName, index) => (
           <ButtonCloudHeader
             key={index}
             btnName={btnName}
-            src={appData.cloudButtons[btnName]}
+            src={appData.fileButtons[btnName]}
           />
         ))}
       </div>
