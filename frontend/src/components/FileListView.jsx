@@ -34,7 +34,7 @@ export default function FileListView({ id, src, fileName, size, created, focus, 
       <div
         className="w-3/5 h-5 px-2 text-xs"
       >
-        {fileName.length > 35 ? fileName.slice(0, 28) + ' ...' + fileName.slice(-7) : fileName}
+        {fileName.length > 45 ? fileName.slice(0, 38) + ' ...' + fileName.slice(-7) : fileName}
       </div>
       <div
         className="w-[13%] h-5 text-xs"

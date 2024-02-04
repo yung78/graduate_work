@@ -1,5 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
-
+# from datetime import datetime, timedelta
 from .models import UserSession, UserFiles, UserData
 
 
@@ -20,9 +20,8 @@ def check_auth(request):
 def check_auth_admin(request):
     try:
         session = UserSession.objects.get(session_token=request.headers['Authorization'])
-        data = UserData.objects.get(user=session.user)
         if session.user.is_admin:
-            return {'auth': True, 'user': session.user, 'data': data, 'session': session}
+            return {'auth': True, }
         else:
             raise ObjectDoesNotExist
     except ObjectDoesNotExist:

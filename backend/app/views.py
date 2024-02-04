@@ -94,7 +94,7 @@ def get_data(request, data):
 def registration(request):
     logger.info('Регистрация нового аккаунта.')
     body = json.loads(request.body.decode('utf-8'))
-    print(request.body)
+
     if len(body['email']) == 0 or len(body['password']) == 0:
         return Response({'error': 'not enough data'}, status=400)
     try:
@@ -102,7 +102,6 @@ def registration(request):
 
         return Response({'error': 'already exists'}, status=409)
     except ObjectDoesNotExist:
-        print('tyt')
         try:
             key = Fernet.generate_key().decode()
             new_user = CloudUser(
@@ -354,7 +353,6 @@ class AdminFile(APIView):
     def post(self, request, fid):
         @admin_auth
         def download(req):
-            print(req.data)
             logger.info(f'Админ. Загрузка файла на сервер в хранилище пользователя id:{fid}.')
             serializer = self.serializer_class(data=request.data)
             if serializer.is_valid():
@@ -406,5 +404,3 @@ def get_url_admin(request, fid):
 
         return Response({'url': f'http://localhost:3000/download/{encrypt_url}'}, status=200)
     return _get_url_admin(request)
-
-

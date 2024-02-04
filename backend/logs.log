@@ -1651,3 +1651,82 @@ TypeError: AdminFile.post() got an unexpected keyword argument 'fid'
 2024-02-02 23:26:28,052 app.views INFO     Админ. Получение общих данных.
 2024-02-02 23:26:30,928 app.views INFO     Запрос данных своего аккаунта id:1
 2024-02-02 23:26:31,063 app.views INFO     Админ. Получение данных аккаунта id:4.
+2024-02-03 11:44:08,446 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-03 11:44:26,694 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 11:44:26,916 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 11:44:27,032 app.views INFO     Админ. Получение общих данных.
+2024-02-03 11:48:02,348 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 11:48:02,433 app.views INFO     Админ. Получение данных аккаунта id:2.
+2024-02-03 15:05:40,535 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-03 15:06:03,836 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-03 15:18:04,761 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-03 15:19:20,603 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-03 15:20:05,552 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-03 15:20:40,707 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-03 15:26:53,786 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-03 15:46:27,243 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-03 15:56:04,009 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-03 16:00:59,146 django.utils.autoreload INFO     /home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/app/cloud_auth.py changed, reloading.
+2024-02-03 16:00:59,593 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-03 16:01:28,571 django.utils.autoreload INFO     /home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/app/cloud_auth.py changed, reloading.
+2024-02-03 16:01:29,009 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-03 16:01:46,377 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-03 16:02:32,897 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-03 16:05:13,963 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-03 16:05:53,878 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-03 16:33:02,776 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-03 16:35:58,730 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-03 16:36:07,310 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:36:07,533 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:36:07,715 app.views INFO     Админ. Получение общих данных.
+2024-02-03 16:37:05,985 django.utils.autoreload INFO     /home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/app/cloud_auth.py changed, reloading.
+2024-02-03 16:37:06,434 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-03 16:42:25,339 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:42:25,376 app.views INFO     Админ. Получение общих данных.
+2024-02-03 16:42:30,802 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:42:30,912 app.views INFO     Админ. Получение общих данных.
+2024-02-03 16:42:44,083 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:42:44,215 app.views INFO     Админ. Получение общих данных.
+2024-02-03 16:42:55,042 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:42:55,160 app.views INFO     Админ. Получение общих данных.
+2024-02-03 16:43:05,846 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:43:05,963 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:43:06,093 app.views INFO     Админ. Получение общих данных.
+2024-02-03 16:43:25,153 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:43:25,281 app.views INFO     Админ. Получение общих данных.
+2024-02-03 16:43:26,612 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:43:26,736 app.views INFO     Админ. Получение данных аккаунта id:2.
+2024-02-03 16:43:40,589 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:43:40,709 app.views INFO     Админ. Получение общих данных.
+2024-02-03 16:43:42,245 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:43:42,363 app.views INFO     Админ. Получение данных аккаунта id:5.
+2024-02-03 16:43:44,730 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:43:44,856 app.views INFO     Админ. Получение общих данных.
+2024-02-03 16:43:46,126 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:43:46,259 app.views INFO     Админ. Получение данных аккаунта id:2.
+2024-02-03 16:43:47,761 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:43:47,877 app.views INFO     Админ. Получение общих данных.
+2024-02-03 16:43:49,038 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:43:49,185 app.views INFO     Админ. Получение данных аккаунта id:4.
+2024-02-03 16:43:51,510 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:43:51,628 app.views INFO     Админ. Получение общих данных.
+2024-02-03 16:43:52,894 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:43:53,021 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:43:53,142 app.views INFO     Админ. Получение данных аккаунта id:1.
+2024-02-03 16:45:04,133 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:45:04,384 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:45:04,500 app.views INFO     Админ. Получение общих данных.
+2024-02-03 16:45:18,398 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:45:18,527 app.views INFO     Админ. Получение данных аккаунта id:5.
+2024-02-03 16:45:20,042 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 16:45:20,160 app.views INFO     Админ. Получение общих данных.
+2024-02-03 16:45:25,313 app.views INFO     Админ. Удаление аккаунта id:5.
+2024-02-03 17:02:26,375 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 17:02:26,499 app.views INFO     Админ. Получение общих данных.
+2024-02-03 17:22:09,245 django.utils.autoreload INFO     /home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/app/cloud_auth.py changed, reloading.
+2024-02-03 17:22:09,735 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-03 17:23:45,151 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-03 17:24:21,808 app.views INFO     Запрос данных своего аккаунта id:1
+2024-02-03 17:24:21,926 app.views INFO     Админ. Получение общих данных.
+2024-02-03 17:26:45,690 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-04 14:06:46,335 django.utils.autoreload INFO     Watching for file changes with StatReloader

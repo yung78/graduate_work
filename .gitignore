@@ -28,4 +28,5 @@
 /backend/.idea
 /.idea
 /server_for_test
-
+/backend/errors.log
+/backend/logs.log
