@@ -80,6 +80,8 @@ export default function Information() {
                   django-cleanup==8.0.0
                   django-cors-headers==4.3.1
                   djangorestframework==3.14.0
+                  gunicorn==21.2.0
+                  packaging==23.2
                   pillow==10.2.0
                   psycopg2-binary==2.9.9
                   pycparser==2.21

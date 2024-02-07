@@ -10,7 +10,6 @@ import datetime
 import secrets
 import os
 import json
-import urllib.parse
 import logging
 
 from .forms import AvatarForm, AvatarIdForm

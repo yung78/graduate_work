@@ -38,7 +38,7 @@ export default function ModalAddChangeUser({ data }) {
     // // Валидация почты и пароля
     if (!emailValidation(data.email)) {
       return showMsg({error: 'Ты точно админ?'}, 3000, setMessage);
-    } else if (!passwordValidation(data.password)) {
+    } else if ('password' in data && !passwordValidation(data.password)) {
       return showMsg({error: 'Начинаю сомневаться в твоей профпригодности...'}, 3000, setMessage);
     }
 

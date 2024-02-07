@@ -1730,3 +1730,7 @@ TypeError: AdminFile.post() got an unexpected keyword argument 'fid'
 2024-02-03 17:24:21,926 app.views INFO     Админ. Получение общих данных.
 2024-02-03 17:26:45,690 django.utils.autoreload INFO     Watching for file changes with StatReloader
 2024-02-04 14:06:46,335 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-05 11:25:34,199 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-05 11:26:27,168 django.utils.autoreload INFO     /home/user/Рабочий стол/УЧЕБА/ДИПЛОМ/backend/backend/settings.py changed, reloading.
+2024-02-05 11:26:27,614 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2024-02-05 12:04:39,983 django.utils.autoreload INFO     Watching for file changes with StatReloader

@@ -10,6 +10,7 @@ export default async function baseFetch({ url, method, headers, body, out, file,
       headers: headers,
       body: body,
     });
+    
     // Проверка контролируемых ответов сервера
     if (!status.includes(response.status)) {
       throw new Error(response.statusText);

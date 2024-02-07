@@ -10,6 +10,7 @@ import ModalAddChangeUser from '../components/ModalAddChangeUser';
 import { useEffect, useRef, useState } from 'react';
 import { showMsg, fileSize, handleName } from '../app/helpers';
 import { deleteFocusOnFile, focusOnFile, hideDeleteConfirm } from '../slices/cloudSlice';
+import { changeAvatar as changeUserAvatar } from '../slices/userSlice'; 
 import FooterCardFiles from '../components/FooterCardFiles';
 import ModalConfermDelete from '../components/ModalConfermDelete';
 import { useLogin, useOutsideFileClick } from '../app/customHooks';
@@ -54,6 +55,7 @@ export default function AccountCard() {
     dispatch(focusOnFile(e.target.getAttribute('id')));
   };
 
+  // Изменение аватара
   const handleAvatarChange = async (e) => {
     if (e.target.files) {
       const formData = new FormData();
@@ -69,9 +71,11 @@ export default function AccountCard() {
         e.target.value = "";
         return navigate('/');
       }
-
       e.target.value = "";
       showMsg({success: 'УСПЕШНО!'}, 3000, setMessage);
+      if (data.id === person.id) {
+        dispatch(changeUserAvatar(response.avatar));
+      }
       return dispatch(cangeDataCard(response));
     }
   };

@@ -55,6 +55,9 @@ export const adminSlice = createSlice({
     deleteFileFromDataCard: (state, action) => {
       return { ...state, card: {...state.card, files: state.card.files.filter((file) => file.id !== Number(action.payload)) } };
     },
+    resetCard: (state) => {
+      return { ...state, card: {} };
+    }
   },
 });
 
@@ -73,6 +76,7 @@ export const {
   addDataToCard,
   cangeDataCard,
   deleteFileFromDataCard,
+  resetCard,
 
 } = adminSlice.actions;
 

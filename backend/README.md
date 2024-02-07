@@ -80,7 +80,7 @@ sudo apt update
 ```bash
 sudo apt upgrade
 ```
-Пакеты с обновлениями системы облака(ssh, cloud...), на которые приходили отдельные подтверждения, не обновлял(keep stable version). 
+Пакеты с обновлениями системы облака(Configuring openssh-server, Configuration file), на которые приходили отдельные подтверждения, не обновлял(keep stable version). 
 
 Устанавливаем необходимые пакеты:
 ```bash
@@ -115,10 +115,84 @@ CREATE DATABASE user;
 \q
 exit
 psql
-CREATE DATABASE name
+CREATE DATABASE name;
 \q
 ```
 где вместо name вводим имя БД проекта.
 
-В домашней директории пользователя клонируем репозиторий нашего проекта и опускаемся по папкам проекта до директории с файлом manage.py.
+В домашней директории пользователя клонируем репозиторий нашего проекта и опускаемся по папкам проекта до директории с файлом manage.py, затем устанавливаем и активируем виртуальное окружение:
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+Далее устанавливаем все пакеты из requirements.txt и проверяем их установку:
+```bash
+pip install -r requirements.txt
+pip freeze
+```
+Создаем файл .env и прописываем переменные окружения.  Пример:
+![env](./readme_res/env.png)  
+
+Проверяем корректное использование переменного окружения в настройках и сами настройки проекта в файле settings.py.  
+Запускаем миграции и загружаем данные из заранее подготовленного файла loaddata.json:
+```bash
+python manage.py migrate
+python manage.py loaddata loaddata.json
+```
+Если миграции не прошли - перепроверяем настройки!  
+
+Далее настраиваем gunicorn в соответствии с примером из записи вебинара:  
+```bash
+sudo nano /etc/systemd/system/gunicorn.service
+```
+Настройки на данном проекте:  
+![gunicorn](./readme_res/gunicorn.png)  
+
+Проверка правильности настроек:  
+```bash
+sudo systemctl start gunicorn
+sudo systemctl enable gunicorn
+sudo systemctl status gunicorn
+```
+Если все настройки прописаны верно - после ввода последней команды мы увидим, что gunicorn активен:  
+![active](./readme_res/gunicorn_active.png)  
+
+Теперь перейдем к настройкам nginx:
+```bash
+sudo nano /etc/nginx/sites-available/cloud
+```
+где следуя примеру из вебинара прописываем настройки.   
+
+Настройки на данном проекте:  
+![gunicorn](./readme_res/nginx.png)  
+где также задается путь к изображениям(аватарам).
+
+Cоздаем символическую ссылку на этот файл в другую директорию:
+```bash
+sudo ln -s /etc/nginx/sites-available/cloud /etc/nginx/sites-enabled
+```
+
+Настраиваем максимальнвй размер присылаемых файлов. Для этого заходим в основные настройки сервера:
+```bash
+sudo nano /etc/nginx/nginx.conf
+```
+и устанавливаем необходимый размер(в данном примере 5мб), добавив записи в http  
+client_max_body_size 5M;  
+client_body_buffer_size 5M;
+
+Перезапускаем сервер nginx и проверяем статус:
+```bash
+sudo systemctl stop nginx
+sudo systemctl start nginx
+sudo systemctl status nginx
+```
+Если все сделали правильно - увидем статус 'active':
+![gunicorn](./readme_res/nginx_active.png)  
+
+Будьте внимательны с настройками. Пропустив в конце одной из настроек "**;**" получал ошибку при запуске:  
+![gunicorn](./readme_res/nginx_error.png) 
+пока не нашел ошибку и не исправил ее.
+
+
+
 
