@@ -1,6 +1,6 @@
 import dateFormat from 'dateformat';
 import { useSelector } from 'react-redux';
-import { fileSize } from '../app/helpers';
+import { fileSize, unsecuredCopyToClipboard } from '../app/helpers';
 import { useNavigate } from 'react-router-dom';
 
 // КОМПОНЕНТ ОТОБРАЖЕНИЯ ФАЙЛОВ ПОЛЬЗОВАТЕЛЯ СПИСКОМ
@@ -15,9 +15,13 @@ export default function FileListView({ id, src, fileName, size, created, focus, 
       return navigate('/');
     }
     console.log(response);
-    navigator.clipboard.writeText(response['url'])
-      .then(() => console.log('copy'))
-      .catch((e) => console.log(e));
+
+    if (window.isSecureContext && navigator.clipboard) {
+      navigator.clipboard.writeText(response.url);
+    } else {
+      unsecuredCopyToClipboard(response.url);
+    }
+
     return;
   };
 
