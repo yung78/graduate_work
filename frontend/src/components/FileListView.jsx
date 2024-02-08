@@ -14,7 +14,6 @@ export default function FileListView({ id, src, fileName, size, created, focus, 
     if (response.error) {
       return navigate('/');
     }
-    console.log(response);
 
     if (window.isSecureContext && navigator.clipboard) {
       navigator.clipboard.writeText(response.url);

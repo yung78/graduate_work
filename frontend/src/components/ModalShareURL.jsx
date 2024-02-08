@@ -48,7 +48,7 @@ export default function ModalShareURL({ fetch, files }) {
           </span>
         </div>
         <div
-          className="w-5 h-5 absolute top-3 right-3 hover:bg-gray-200 active:shadow-[0_0px_10px_4px_rgba(34,60,80,0.2)]"
+          className="w-5 h-5 cursor-pointer absolute top-3 right-3 hover:bg-gray-200 active:shadow-[0_0px_10px_4px_rgba(34,60,80,0.2)]"
           onClick={() => handleCopy(cloudState.dounloadURL)}
         >
           <img src="/img/copylink.png" alt="copyLink" />
