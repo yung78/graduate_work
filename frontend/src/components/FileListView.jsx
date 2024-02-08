@@ -14,7 +14,7 @@ export default function FileListView({ id, src, fileName, size, created, focus, 
     if (response.error) {
       return navigate('/');
     }
-
+    console.log(response);
     return navigator.clipboard.writeText(response.url);
   };
 
