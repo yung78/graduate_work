@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteFocusOnFile, hideShareURL } from '../slices/cloudSlice';
 import { useGetURL } from '../app/customHooks';
+import { unsecuredCopyToClipboard } from '../app/helpers';
 
 
 // КОМПОНЕНТ ОТОБРАЖЕНИЯ ССЫЛКИ ДЛЯ СКАЧИВАНИЯ(модальное окно)
@@ -8,8 +9,6 @@ export default function ModalShareURL({ fetch, files }) {
   const cloudState = useSelector((state) => state.cloud);
   const dispatch = useDispatch();
   const fileName = files.filter((f) => Number(f.id) === Number(cloudState.onFocus))[0]['name'];
-
-
 
   useGetURL(fetch);
 
@@ -21,7 +20,11 @@ export default function ModalShareURL({ fetch, files }) {
 
   // Обработчик нажатия кнопки "копировать ссылку" 
   const handleCopy = (link) => {
-    navigator.clipboard.writeText(link);
+    if (window.isSecureContext && navigator.clipboard) {
+      navigator.clipboard.writeText(link);
+    } else {
+      unsecuredCopyToClipboard(link);
+    }
   };
 
   return (
