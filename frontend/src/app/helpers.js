@@ -41,7 +41,7 @@ export function unsecuredCopyToClipboard(text) {
   const textArea = document.createElement("textarea");
   textArea.value = text;
   document.body.appendChild(textArea);
-  textArea.focus();
+  textArea.focus({preventScroll: true});
   textArea.select();
   try {
     document.execCommand('copy');
