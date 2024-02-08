@@ -15,7 +15,10 @@ export default function FileListView({ id, src, fileName, size, created, focus, 
       return navigate('/');
     }
     console.log(response);
-    return await navigator.clipboard.writeText(response['url']);
+    navigator.clipboard.writeText(response['url'])
+      .then(() => console.log('copy'))
+      .catch((e) => console.log(e));
+    return;
   };
 
   return (
