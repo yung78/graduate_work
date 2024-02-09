@@ -1,6 +1,6 @@
 # Дипломная работа
 
-## Тема: Облачное файловое хранилище
+## Тема: &ensp;"Облачное файловое хранилище"
 
 В рамках дипломного задания предполагается создание
 комплексного проекта, включающего:
@@ -11,10 +11,5 @@
 
 ## Описание:
 
-1) [ Frontend](https://github.com/yung78/graduate_work/tree/main/frontend)
-2) [ Backend](https://github.com/yung78/graduate_work/tree/main/backend)  
-
-
-Доработать:
-- развернуть на хосте
-- back Инструкция: описание процесса развертывания и запуска на хосте + небольшое описание функционала
+1) &ensp;[ Frontend](https://github.com/yung78/graduate_work/tree/main/frontend)
+2) &ensp;[ Backend](https://github.com/yung78/graduate_work/tree/main/backend)  
