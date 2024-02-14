@@ -51,7 +51,9 @@ class UserData(models.Model):
 class UserFiles(models.Model):
     file = models.FileField(upload_to=user_directory_path)
     name = models.CharField(max_length=250)
+    comment = models.TextField(default='')
     created = models.DateTimeField(auto_now_add=True)
+    last_download = models.DateTimeField(null=True, blank=True)
     size = models.CharField(max_length=250)
     user = models.ForeignKey(CloudUser, on_delete=models.CASCADE)
 

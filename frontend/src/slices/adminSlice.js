@@ -50,10 +50,13 @@ export const adminSlice = createSlice({
         return { ...state, card: action.payload };
     },
     cangeDataCard: (state, action) => {
-      return { ...state, card: {...state.card, ...action.payload } };
+      return { ...state, card: { ...state.card, ...action.payload } };
     },
     deleteFileFromDataCard: (state, action) => {
-      return { ...state, card: {...state.card, files: state.card.files.filter((file) => file.id !== Number(action.payload)) } };
+      return { ...state, card: { ...state.card, files: state.card.files.filter((file) => file.id !== Number(action.payload)) } };
+    },
+    changeFileDataFromDataCard: (state, action) => {
+      return { ...state, card: { ...state.card, files: state.card.files.map((el) => el.id === action.payload.id ? action.payload : el) } };
     },
     resetCard: (state) => {
       return { ...state, card: {} };
@@ -76,6 +79,7 @@ export const {
   addDataToCard,
   cangeDataCard,
   deleteFileFromDataCard,
+  changeFileDataFromDataCard,
   resetCard,
 
 } = adminSlice.actions;

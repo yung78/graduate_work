@@ -1,12 +1,12 @@
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-//КОМПОНЕНТ ПОДТВЕРЖДЕНИЯ УДАЛЕНИЯ ФАЙЛА(модальное окно)
+// КОМПОНЕНТ ПОДТВЕРЖДЕНИЯ УДАЛЕНИЯ ФАЙЛА(модальное окно)
 export default function ModalConfermDelete({ state, request, hide, delFocus, delElement, fileName }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  //Обработчик нажатия кнопки "Удалить"
+  // Обработчик нажатия кнопки "Удалить"
   const handleDelete = async () => {
     const response = await request(state.onFocus);
     if (response.status === 204) {
@@ -20,7 +20,7 @@ export default function ModalConfermDelete({ state, request, hide, delFocus, del
     }
   };
   
-  //Обработчик нажатия кнопки "Отмена"
+  // Обработчик нажатия кнопки "Отмена"
   const handleCancel = () => {
     dispatch(hide());
     dispatch(delFocus());
@@ -43,17 +43,17 @@ export default function ModalConfermDelete({ state, request, hide, delFocus, del
           </p>
         )}
         <div
-          className='w-full mt-4 flex justify-around'
+          className="w-full mt-4 flex justify-around"
         >
           <button
-            type='button'
+            type="button"
             className="w-20 h-9  border-2 rounded-md border-gray-300 bg-blue-400 hover:border-gray-400 text-xs text-center font-bold"
             onClick={handleDelete}
           >
             Удалить
           </button>
           <button
-            type='button'
+            type="button"
             className="w-20 h-9  border-2 rounded-md border-gray-300 bg-blue-400 hover:border-gray-400 text-xs text-center font-bold"
             onClick={handleCancel}
           >

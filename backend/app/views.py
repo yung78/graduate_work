@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from cryptography.fernet import Fernet
 from dotenv import load_dotenv
-import datetime
+from django.utils import timezone
 import secrets
 import os
 import json
@@ -66,14 +66,16 @@ def is_admin(request, data):
 @user_auth
 def get_data(request, data):
     logger.info(f'Запрос данных своего аккаунта id:{data["user"].id}')
-    data['user'].last_visit = datetime.datetime.now()
+    data['user'].last_visit = timezone.now()
     data['user'].save(update_fields=['last_visit'])
 
     files = [{
         'id': x.id,
         'name': x.name,
+        'comment': x.comment,
         'size': x.size,
         'created': x.created,
+        'last_download': x.last_download,
     } for x in data['files']]
 
     response_data = {
@@ -136,7 +138,7 @@ def registration(request):
 @user_auth
 def change_self_data(request, data):
     logger.info(f'Изменение данных своего аккаунта id:{data["user"].id}.')
-    if len(request.FILES) == 1:
+    if len(request.FILES) >= 1:
         avatar = AvatarForm(request.POST, request.FILES)
         if avatar.is_valid():
             data['data'].avatar.delete()
@@ -181,8 +183,10 @@ class File(APIView):
                 files = [{
                     'id': x.id,
                     'name': x.name,
+                    'comment': x.comment,
                     'size': x.size,
                     'created': x.created,
+                    'last_download': x.last_download,
                 } for x in data['files']]
 
                 return Response(data={'files': files}, status=201)
@@ -205,8 +209,33 @@ class File(APIView):
         def upload(req, data):
             logger.info(f'Сохранение файла на клиенте id:{data["user"].id}')
             file = data['files'].get(id=fid)
+            file.last_download = timezone.now()
+            file.save(update_fields=['last_download'])
             return FileResponse(file.file, as_attachment=True)
         return upload(request)
+
+    # Изменение имени файла или комментария
+    def patch(self, request, fid):
+        @user_auth
+        def change(req, data):
+
+            logger.info(f'Изменение файла id:{data["user"].id}')
+            file = data['files'].get(id=fid)
+            body = json.loads(request.body)
+            file.name = body['name']
+            file.comment = body['comment']
+            file.save(update_fields=['name', 'comment',])
+            new_file = {
+                'id': file.id,
+                'name': file.name,
+                'comment': file.comment,
+                'size': file.size,
+                'created': file.created,
+                'last_download': file.last_download,
+            }
+
+            return Response(data=new_file, status=201)
+        return change(request)
 
 
 # Формирование и отправка ссылки для скачивания(сохранения) файла сторонним пользователем
@@ -236,6 +265,8 @@ def get_file(request, code):
             raise ObjectDoesNotExist
 
         file = UserFiles.objects.get(user=params[0], name=params[1])
+        file.last_download = timezone.now()
+        file.save(update_fields=['last_download'])
         response = FileResponse(file.file, as_attachment=True, filename=params[1])
         response['Access-Control-Expose-Headers'] = 'Content-Disposition'
         return response
@@ -282,8 +313,10 @@ def get_one(request, uid):
             files.append({
                 'id': file.id,
                 'name': file.name,
+                'comment': file.comment,
                 'size': file.size,
                 'created': file.created,
+                'last_download': file.last_download,
             })
 
         data = {
@@ -359,8 +392,10 @@ class AdminFile(APIView):
                 files = [{
                     'id': x.id,
                     'name': x.name,
+                    'comment': x.comment,
                     'size': x.size,
                     'created': x.created,
+                    'last_download': x.last_download,
                 } for x in UserFiles.objects.filter(user=fid)]
 
                 return Response(data={'files': files}, status=201)
@@ -385,8 +420,33 @@ class AdminFile(APIView):
             uid = UserFiles.objects.get(id=fid).user.id
             logger.info(f'Сохранение администратором файла хранилища пользователя id:{uid} на клиенте')
             file = UserFiles.objects.get(id=fid)
+            file.last_download = timezone.now()
+            file.save(update_fields=['last_download'])
             return FileResponse(file.file, as_attachment=True)
         return upload(request)
+
+    # Изменение имени файла или комментария
+    def patch(self, request, fid):
+        @admin_auth
+        def change(req):
+            uid = UserFiles.objects.get(id=fid).user.id
+            logger.info(f'Изменение администратором файла хранилища пользователя id:{uid}')
+            file = UserFiles.objects.get(id=fid)
+            body = json.loads(request.body)
+            file.name = body['name']
+            file.comment = body['comment']
+            file.save(update_fields=['name', 'comment', ])
+            new_file = {
+                'id': file.id,
+                'name': file.name,
+                'comment': file.comment,
+                'size': file.size,
+                'created': file.created,
+                'last_download': file.last_download,
+            }
+
+            return Response(data=new_file, status=201)
+        return change(request)
 
 
 # Формирование и отправка ссылки для скачивания(сохранения) файла сторонним пользователем

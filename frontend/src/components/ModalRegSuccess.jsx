@@ -24,7 +24,7 @@ export default function ModalRegSuccess() {
           Вы успешно прошли регистрацию!
         </p>
         <button
-          type='button'
+          type="button"
           className="w-20 h-9 mt-10 border-2 rounded-md border-gray-300 bg-blue-400 hover:border-gray-400 text-xs text-center font-bold"
           onClick={handleClick}
         >

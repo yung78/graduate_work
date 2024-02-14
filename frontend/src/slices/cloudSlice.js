@@ -5,6 +5,7 @@ const initialState = {
   files: [],
   onFocus: null,
   confirm: false,
+  change: false,
   share: false,
   message: false,
   dounloadURL: false,
@@ -22,6 +23,9 @@ export const cloudSlice = createSlice({
     },
     deleteFileFromFiles: (state, action) => {
       return { ...state, files: state.files.filter((el) => el.id !== Number(action.payload)) };
+    },
+    changeFileData: (state, action) => {
+      return { ...state, files: state.files.map((el) => el.id === action.payload.id ? action.payload : el) };
     },
     focusOnFile: (state, action) => {
       return { ...state, onFocus: action.payload }; 
@@ -53,6 +57,12 @@ export const cloudSlice = createSlice({
     resetCloud: () => {
       return { ...initialState };
     },
+    showChange: (state) => {
+      return { ...state, change: true };
+    },
+    hideChange: (state) => {
+      return { ...state, change: false };
+    },
   }
 });
 
@@ -61,6 +71,7 @@ export const {
   changeView,
   addUserFiles,
   deleteFileFromFiles,
+  changeFileData,
   focusOnFile,
   deleteFocusOnFile,
   showDeleteConfirm,
@@ -70,6 +81,8 @@ export const {
   showMessage,
   hideMessage,
   saveDownloadURL,
+  showChange,
+  hideChange,
 
 } = cloudSlice.actions;
 

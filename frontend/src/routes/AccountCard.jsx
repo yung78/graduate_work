@@ -1,21 +1,22 @@
 import { redirect, useLoaderData, useNavigate } from 'react-router-dom';
-import { changeAvatar, deleteFileAdmin, getDownloadURLAdmin, getUser } from '../app/adminApiRequests';
+import { changeAvatar, changeFileAdmin, deleteFileAdmin, getDownloadURLAdmin, getUser } from '../app/adminApiRequests';
 import ButtonBack from '../components/ButtonBack';
 import dateFormat from "dateformat";
 import FileListView from '../components/FileListView';
 import ButtonChange from '../components/ButtonChange';
 import { useDispatch, useSelector } from 'react-redux';
-import { addDataToCard, cangeDataCard, deleteFileFromDataCard, showChangeModal } from '../slices/adminSlice';
+import { addDataToCard, cangeDataCard, changeFileDataFromDataCard, deleteFileFromDataCard, showChangeModal } from '../slices/adminSlice';
 import ModalAddChangeUser from '../components/ModalAddChangeUser';
 import { useEffect, useRef, useState } from 'react';
-import { showMsg, fileSize, handleName } from '../app/helpers';
-import { deleteFocusOnFile, focusOnFile, hideDeleteConfirm } from '../slices/cloudSlice';
+import { showMsg, fileSize } from '../app/helpers';
+import { deleteFocusOnFile, hideDeleteConfirm } from '../slices/cloudSlice';
 import { changeAvatar as changeUserAvatar } from '../slices/userSlice'; 
 import FooterCardFiles from '../components/FooterCardFiles';
 import ModalConfermDelete from '../components/ModalConfermDelete';
 import { useLogin, useOutsideFileClick } from '../app/customHooks';
 import { getPerson } from '../app/apiRequests';
 import ModalShareURL from '../components/ModalShareURL';
+import ModalChangeNameComment from '../components/ModalChangeNameComment';
 
 
 // Загрузка данных персоны(пользователя/администратора)
@@ -46,13 +47,9 @@ export default function AccountCard() {
     dispatch(addDataToCard(data));
   }, [dispatch, data]);
 
+  // Обработчик нажатия кнопки изменения аватара
   const handleChangeAvatar = () => {
     inputRef.current.click();
-  };
-
-  // Обработчик фокусировки на файле
-  const handleFocusOnfile = (e) => {
-    dispatch(focusOnFile(e.target.getAttribute('id')));
   };
 
   // Изменение аватара
@@ -82,13 +79,22 @@ export default function AccountCard() {
 
   return (
     <section
-      className="w-full p-6"
+      className="w-full p-2 md:p-6"
     >
       {adminState.changeModal ? <ModalAddChangeUser data={adminState.card} /> : <></>}
       {cloudState.share ? (
         <ModalShareURL
-          fetch={getDownloadURLAdmin}
+          request={getDownloadURLAdmin}
           files={adminState.card.files}
+        />
+      ) : (
+        <></>
+      )}
+      {cloudState.change ? (
+        <ModalChangeNameComment
+          request={changeFileAdmin}
+          files={adminState.card.files}
+          saveChanges={changeFileDataFromDataCard}
         />
       ) : (
         <></>
@@ -171,18 +177,14 @@ export default function AccountCard() {
         Список файлов:
       </h2>
       <div
-        className="w-full h-[35vh] p-5 rounded-md bg-stone-100 overflow-auto border-2 border-stone-200" 
+        className="w-full h-[35vh] p-1 md:p-5 rounded-md bg-stone-100 overflow-auto border-2 border-stone-200" 
       >
         {adminState.card.files?.length ? (
           adminState.card.files.map((file) => {
             return (
               <FileListView
                 key={file.id}
-                id={file.id}
-                src={handleName(file.name)}
-                fileName={file.name}
-                size={file.size}
-                focus={handleFocusOnfile}
+                file={file}
                 fetch={getDownloadURLAdmin}
               />
             )

@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addUserFiles, showDeleteConfirm, showMessage, showShareURL,  } from '../slices/cloudSlice';
+import { addUserFiles, showChange, showDeleteConfirm, showMessage, showShareURL,  } from '../slices/cloudSlice';
 import { sendFiles, getFile } from '../app/apiRequests';
 import { Form, useNavigate } from 'react-router-dom';
 
@@ -18,6 +18,7 @@ export default function ButtonCloudHeader({ btnName, src }) {
     'поделиться': () => cloudState.onFocus ? dispatch(showShareURL()) : dispatch(showMessage()),
     'загрузить': () => inputRef.current.click(),
     'удалить': () => cloudState.onFocus ? dispatch(showDeleteConfirm()) : dispatch(showMessage()),
+    'изменить': () => cloudState.onFocus ? dispatch(showChange()) : dispatch(showMessage()),
   };
 
   // Обработчик сохранения(скачки) файла на клиенте
@@ -63,7 +64,7 @@ export default function ButtonCloudHeader({ btnName, src }) {
       tabIndex={-1}
     >
       <div
-        className=" w-[3vh] h-[2vh] bg-gray-200 absolute top-[1.1vh] left-[1.3vh] group-hover:bg-neutral-500 group-active:bg-black group-hover:shadow-[0_10px_30px_10px_rgba(255,255,255,0.7)]"
+        className=" w-[3.2vh] h-[2.1vh] bg-gray-200 absolute top-[1.1vh] left-[1.3vh] group-hover:bg-neutral-500 group-active:bg-black group-hover:shadow-[0_10px_30px_10px_rgba(255,255,255,0.7)]"
       >
       </div>
       <div

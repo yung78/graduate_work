@@ -5,12 +5,12 @@ import { unsecuredCopyToClipboard } from '../app/helpers';
 
 
 // КОМПОНЕНТ ОТОБРАЖЕНИЯ ССЫЛКИ ДЛЯ СКАЧИВАНИЯ(модальное окно)
-export default function ModalShareURL({ fetch, files }) {
+export default function ModalShareURL({ request, files }) {
   const cloudState = useSelector((state) => state.cloud);
   const dispatch = useDispatch();
   const fileName = files.filter((f) => Number(f.id) === Number(cloudState.onFocus))[0]['name'];
 
-  useGetURL(fetch);
+  useGetURL(request);
 
   // Обработчик нажатия кнопки "Закрыть"
   const handleCancel = () => {
@@ -54,10 +54,10 @@ export default function ModalShareURL({ fetch, files }) {
           <img src="/img/copylink.png" alt="copyLink" />
         </div>
         <div
-          className='w-full mt-4 flex justify-around'
+          className="w-full mt-4 flex justify-around"
         >
           <button
-            type='button'
+            type="button"
             className="w-20 h-9  border-2 rounded-md border-gray-300 bg-blue-400 hover:border-gray-400 text-xs text-center font-bold"
             onClick={handleCancel}
           >

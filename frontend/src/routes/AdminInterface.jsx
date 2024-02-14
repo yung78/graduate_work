@@ -72,7 +72,7 @@ export default function AdminInterface() {
       >      
         {adminState.data?.map((user, index) => (
           <UsersList 
-            key={index}
+            key={user.id}
             user={user}
           />
         ))}

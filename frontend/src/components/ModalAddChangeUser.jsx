@@ -73,10 +73,10 @@ export default function ModalAddChangeUser({ data }) {
         className="modal w-[80vw] lg:w-[50vw] min-h-1/2 p-4 relative rounded-md bg-white box-border z-20 flex flex-col justify-center items-center text-center"
       >
         <p
-        className={`${message.error ? 'text-red-700' : 'text-black' } h-4 mb-2 mt-2 text-center text-sm font-bold`}
-      >
-        {message.error ? message.error : message.success ? message.success : ''}
-      </p>
+          className={`${message.error ? 'text-red-700' : 'text-black' } h-4 mb-2 mt-2 text-center text-sm font-bold`}
+        >
+          {message.error ? message.error : message.success ? message.success : ''}
+        </p>
         <form
           method="POST"
           className="w-full"

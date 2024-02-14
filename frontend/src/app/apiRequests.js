@@ -121,3 +121,13 @@ export async function getFileByLink(params) {
     fUrl: true,
   });
 }
+
+// Функция для изменения имени/комментария файла 
+export async function changeFile(id, data) {
+  return baseFetch({
+    url: process.env.REACT_APP_CHANGE_FILE_URL + id,
+    method: 'PATCH',
+    headers: { 'Authorization': await localforage.getItem('sessionToken'), },
+    body: JSON.stringify(data),
+  });
+}

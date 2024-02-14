@@ -1,10 +1,12 @@
 import dateFormat from 'dateformat';
-import { useSelector } from 'react-redux';
-import { fileSize, unsecuredCopyToClipboard } from '../app/helpers';
+import { useDispatch, useSelector } from 'react-redux';
+import { fileSize, handleName, unsecuredCopyToClipboard } from '../app/helpers';
 import { useNavigate } from 'react-router-dom';
+import { focusOnFile } from '../slices/cloudSlice';
 
 // КОМПОНЕНТ ОТОБРАЖЕНИЯ ФАЙЛОВ ПОЛЬЗОВАТЕЛЯ СПИСКОМ
-export default function FileListView({ id, src, fileName, size, created, focus, fetch}) { 
+export default function FileListView({ file, fetch}) { 
+  const dispatch = useDispatch();
   const cloudState = useSelector((state) => state.cloud);
   const navigate = useNavigate();
 
@@ -26,31 +28,41 @@ export default function FileListView({ id, src, fileName, size, created, focus, 
 
   return (
     <div
-      id={id}
+      id={file.id}
       className="file w-full mb-1 h-14 p-2 flex items-center outline-none rounded-md cursor-default bg-slate-50 hover:bg-blue-100 focus:bg-blue-100 focus:hover:bg-blue-200"
       tabIndex={-1}
-      onFocus={(e) => focus(e)}
+      onFocus={(e) => dispatch(focusOnFile(e.target.getAttribute('id')))}
     >
       <div
         className="w-12 h-12"
       >
         
-        <img src={src} alt="" />
+        <img src={handleName(file.name)} alt="" />
       </div>
       <div
-        className="w-3/5 h-5 px-2 text-xs"
+        className="w-3/5 text-xs flex items-center"
       >
-        {fileName.length > 45 ? fileName.slice(0, 38) + ' ...' + fileName.slice(-7) : fileName}
+        <span
+          className="w-1/2 ml-1 font-medium"
+        >
+          {file.name?.length > 20 ? file.name.slice(0, 13) + ' ...' + file.name.slice(-7) : file.name}
+        </span>
+        <span
+          className="w-1/2 ml-1"
+        >
+          {file.comment?.length > 50 ? file.comment.slice(0, 43) + ' ...' + file.comment.slice(-7) : file.comment}
+        </span>
       </div>
       <div
         className="w-[13%] h-5 text-xs"
       >
-        {fileSize(size)} 
+        {fileSize(file.size)} 
       </div>
       <div
-        className="w-[13%] h-5 text-xs"
+        className="w-[13%] h-5 text-xs flex flex-col justify-center items-center"
       >
-        {dateFormat(created, 'dd.mm.yyyy')}
+        <p>&uarr;&nbsp;{file.created ? dateFormat(file.created, 'dd.mm.yyyy') : '__________'}</p>
+        <p>&darr;&nbsp;{file.last_download ? dateFormat(file.last_download, 'dd.mm.yyyy') : '__________'}</p>
       </div>
       <div
         className="w-[13%] h-5 flex justify-center"

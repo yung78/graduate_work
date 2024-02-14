@@ -7,7 +7,7 @@ from app.views import login, logout, is_admin, registration, get_data, File, get
 from backend.urls_admin import admin_patterns
 
 urlpatterns = [
-    path('superadmin/', admin.site.urls),
+    # path('superadmin/', admin.site.urls),
     path('api/li', login),
     path('api/lo', logout),
     path('api/ia', is_admin),

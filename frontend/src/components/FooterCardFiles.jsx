@@ -1,7 +1,7 @@
 import ButtonFooterCardFiles from './ButtonFooterCardFiles';
 import appData from '../app/appData';
 import { useDispatch, useSelector } from 'react-redux';
-import { showDeleteConfirm, showMessage, showShareURL } from '../slices/cloudSlice';
+import { showChange, showDeleteConfirm, showMessage, showShareURL } from '../slices/cloudSlice';
 import { useRef } from 'react';
 import { Form, useNavigate } from 'react-router-dom';
 import { cangeDataCard } from '../slices/adminSlice';
@@ -20,6 +20,7 @@ export default function FooterCardFiles() {
     'поделиться': () => cloudState.onFocus ? dispatch(showShareURL()) : dispatch(showMessage()),
     'загрузить': () => fileRef.current.click(),
     'удалить': () => cloudState.onFocus ? dispatch(showDeleteConfirm()) : dispatch(showMessage()),
+    'изменить': () => cloudState.onFocus ? dispatch(showChange()) : dispatch(showMessage()),
   };
 
   // Обработчик сохранения(скачки) файла на клиенте
@@ -59,16 +60,18 @@ export default function FooterCardFiles() {
   };
 
   return (
-    <div
-      className='w-full p-4 mb-6 flex justify-between'
-    >
-      {Object.keys(appData.fileButtons).map((btnName, index) => (
-          <ButtonFooterCardFiles 
-            key={index}
-            btnName={btnName}
-            onClick={buttonHandlers[btnName]}
-          />
-      ))}
+    <>
+      <div
+        className='w-full py-4 mb-6 flex justify-between'
+      >
+        {Object.keys(appData.fileButtons).map((btnName, index) => (
+            <ButtonFooterCardFiles 
+              key={index}
+              btnName={btnName}
+              onClick={buttonHandlers[btnName]}
+            />
+        ))}
+      </div>
       <Form
         method='post'
       >
@@ -80,6 +83,6 @@ export default function FooterCardFiles() {
           hidden
         />
       </Form>
-    </div>
+    </>
   );
 }

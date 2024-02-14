@@ -1,14 +1,14 @@
 import { redirect, useLoaderData } from 'react-router-dom';
-import { isAdmin, getPerson, deleteFile, getDownloadURL } from '../app/apiRequests';
+import { isAdmin, getPerson, deleteFile, getDownloadURL, changeFile } from '../app/apiRequests';
 import { useLogin, useOutsideFileClick } from '../app/customHooks';
 import FileListView from '../components/FileListView';
 import FileTileView from '../components/FileTileView';
-import {handleName} from '../app/helpers';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import HeaderCloud from '../components/HeaderCloud';
-import { deleteFileFromFiles, deleteFocusOnFile, focusOnFile, hideDeleteConfirm } from '../slices/cloudSlice';
+import { changeFileData, deleteFileFromFiles, deleteFocusOnFile, hideDeleteConfirm } from '../slices/cloudSlice';
 import ModalConfermDelete from '../components/ModalConfermDelete';
 import ModalShareURL from '../components/ModalShareURL';
+import ModalChangeNameComment from '../components/ModalChangeNameComment';
 
 // Проверяем авторизацию и получаем данные аккаунта
 export async function loader() {
@@ -27,14 +27,8 @@ export async function loader() {
 export default function UserInterface() {
   const cloudState = useSelector((state) => state.cloud);
   const { person } = useLoaderData();
-  const dispatch = useDispatch();
   useLogin({person});
   useOutsideFileClick();
-
-  // Обработчик фокусировки на файле
-  const handleFocusOnFile = (e) => {
-    dispatch(focusOnFile(e.target.getAttribute('id')));
-  }
 
   return (
     <div
@@ -50,9 +44,12 @@ export default function UserInterface() {
           <>
             {cloudState.share ? (
               <ModalShareURL
-                fetch={getDownloadURL}
+                request={getDownloadURL}
                 files={cloudState.files}
-              />) : (null)}
+              />
+            ) : (
+              <></>
+            )}
             {cloudState.confirm ? (
               <ModalConfermDelete
                 state={cloudState}
@@ -60,6 +57,16 @@ export default function UserInterface() {
                 hide={hideDeleteConfirm}
                 delFocus={deleteFocusOnFile}
                 delElement={deleteFileFromFiles}
+                fileName={cloudState.files?.filter((f) => f.id === Number(cloudState.onFocus))[0]['name']}
+              />
+            ) : (
+              <></>
+            )}
+            {cloudState.change ? (
+              <ModalChangeNameComment
+                request={changeFile}
+                files={cloudState.files}
+                saveChanges={changeFileData}
               />
             ) : (
               <></>
@@ -91,31 +98,26 @@ export default function UserInterface() {
             ) : (
               cloudState.view ? (
                 <>
-                  {cloudState.files.map((file) => {
+                  {cloudState.files?.map((file) => {
                     return (
                       <FileListView
                         key={file.id}
-                        id={file.id}
-                        src={handleName(file.name)}
-                        fileName={file.name}
+                        file={file}
                         size={file.size}
                         created={file.created}
-                        focus={handleFocusOnFile}
                         fetch={getDownloadURL}
+                        lastDownload={file.last_download}
                       />
                     );
                   })}
                 </>
               ) : (
                 <>
-                  {cloudState.files.map((file) => {
+                  {cloudState.files?.map((file) => {
                     return (
                       <FileTileView
                         key={file.id}
-                        id={file.id}
-                        src={handleName(file.name)}
-                        fileName={file.name}
-                        focus={handleFocusOnFile}
+                        file={file}
                       />
                     );
                   })}

@@ -30,11 +30,13 @@ const appData = {
     'поделиться': '/img/cloudshare.png',
     'загрузить': '/img/cloudup.png',
     'удалить': '/img/clouddelete.png',
+    'изменить': '/img/cloudchange.png',
   },
   adminButtons: [
     'добавить',
     'удалить',
     'изменить',
+    'детали',
   ],
 
   fields: {

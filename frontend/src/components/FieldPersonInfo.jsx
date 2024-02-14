@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { changePersonData } from '../app/apiRequests';
 import { passwordValidation, showMsg } from '../app/helpers';
 
-//КОМПОНЕНТ ИЗМЕНЯЕМЫХ ПОЛЕЙ СВОИХ ЛИЧНЫХ ДАННЫХ
+// КОМПОНЕНТ ИЗМЕНЯЕМЫХ ПОЛЕЙ СВОИХ ЛИЧНЫХ ДАННЫХ
 export default function FieldPersonInfo({atribute, text, setMessage }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -59,7 +59,6 @@ export default function FieldPersonInfo({atribute, text, setMessage }) {
   return (
     <form
       className="w-3/5 min-h-16 mb-4 flex flex-col justify-center items-center"
-      method='POST'
       onSubmit={(e)=> handleSubmit(e)}
     >
       {fieldState? (

@@ -111,3 +111,13 @@ export async function getDownloadURLAdmin(id) {
     headers: { 'Authorization': await localforage.getItem('sessionToken'), },
   });
 }
+
+// Функция для изменения имени/комментария файла 
+export async function changeFileAdmin(id, data) {
+  return baseFetch({
+    url: process.env.REACT_APP_ADMIN_FILES + id,
+    method: 'PATCH',
+    headers: { 'Authorization': await localforage.getItem('sessionToken'), },
+    body: JSON.stringify(data),
+  });
+}
