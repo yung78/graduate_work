@@ -11,7 +11,6 @@ export default function ModalChangeNameComment({ request, files, saveChanges }) 
   const [message, setMessage] = useState(false);
   const cloudState = useSelector((state) => state.cloud);
   const dispatch = useDispatch();
-  console.log(files)
 
   // Обработчик нажатия кнопки "отмена"
   const handleCancel = () => {
