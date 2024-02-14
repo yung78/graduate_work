@@ -87,7 +87,7 @@ export default function Login() {
       >
         <label
           htmlFor="login_email"
-          className="w-4/5 lg:w-3/5 py-1 h-6 text-xs font-sans font-bold"
+          className="w-4/5 sm:w-3/5 py-1 h-6 text-xs font-sans font-bold"
         >
           ВВЕДИТЕ АДРЕС ЭЛЕКТРОННОЙ ПОЧТЫ
         </label>
@@ -95,10 +95,10 @@ export default function Login() {
           id="login_email"
           type="text"
           name="email"
-          className="w-4/5 lg:w-3/5 h-9 px-2 border-2 border-gray-300 bg-blue-100 rounded-md outline-none focus:border-gray-400"
+          className="w-4/5 sm:w-3/5 h-9 px-2 border-2 border-gray-300 bg-blue-100 rounded-md outline-none focus:border-gray-400"
         />
         <div
-          className="w-4/5 lg:w-3/5 h-4"
+          className="w-4/5 sm:w-3/5 h-4"
         >
           {errors?.email ? (
             <p
@@ -112,12 +112,12 @@ export default function Login() {
         </div>
         <label
           htmlFor="login_password"
-          className="w-4/5 lg:w-3/5 py-1 h-6 text-xs font-sans font-bold"
+          className="w-4/5 sm:w-3/5 py-1 h-6 text-xs font-sans font-bold"
         >
           ВВЕДИТЕ ПАРОЛЬ
         </label>
         <div
-          className="w-4/5 lg:w-3/5 relative"
+          className="w-4/5 sm:w-3/5 relative"
         >
           <input
             id="login_password"
@@ -137,7 +137,7 @@ export default function Login() {
           </div>
         </div>
         <div
-          className="w-4/5 lg:w-3/5 h-4 mb-6"
+          className="w-4/5 sm:w-3/5 h-4 mb-6"
         >
           {errors?.password ? (
             <p
@@ -151,12 +151,12 @@ export default function Login() {
         </div>
         <button
           type="submit"
-          className="w-4/5 lg:w-3/5 h-9 border-2 rounded-md border-gray-300 bg-blue-400 hover:border-gray-400 text-xs text-center font-bold active:shadow-[0_0px_10px_4px_rgba(34,60,80,0.2)]"
+          className="w-4/5 sm:w-3/5 h-9 border-2 rounded-md border-gray-300 bg-blue-400 hover:border-gray-400 text-xs text-center font-bold active:shadow-[0_0px_10px_4px_rgba(34,60,80,0.2)]"
         >
           ВХОД
         </button>
         <div
-          className="w-4/5 lg:w-3/5 h-4"
+          className="w-4/5 sm:w-3/5 h-4"
         >
           {errors?.response ? (
             <p
